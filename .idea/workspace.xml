@@ -4,7 +4,7 @@
     <list default="true" id="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" name="Default" comment="" />
     <ignored path="HelpForHumanity.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/settings.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405296034474" ignored="false" />
+    <file path="/settings.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405296889508" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +27,7 @@
       <file leaf-file-name="settings.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/helpforhumanity/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="0" selection-start="2450" selection-end="2450" vertical-scroll-proportion="0.37366167">
+            <state line="64" column="1" selection-start="1770" selection-end="1770" vertical-scroll-proportion="-0.27145922">
               <folding />
             </state>
           </provider>
@@ -43,8 +43,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/wsgi.py" />
+        <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
       </list>
     </option>
   </component>
@@ -274,7 +274,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/helpforhumanity/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="0" selection-start="2450" selection-end="2450" vertical-scroll-proportion="0.37366167">
+        <state line="64" column="1" selection-start="1770" selection-end="1770" vertical-scroll-proportion="-0.27145922">
           <folding />
         </state>
       </provider>
