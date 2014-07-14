@@ -113,6 +113,13 @@
                 {scope:'user_likes, offline_access'}
               );
           }
+
+          function logoutUser() {
+              FB.logout(function(response) {
+                // user is now logged out
+                location.reload();
+              });
+          }
           // This is called with the results from from FB.getLoginStatus().
           function statusChangeCallback(response) {
             console.log('statusChangeCallback');
@@ -190,23 +197,47 @@
               console.log('Successful login for: ' + response.name);
 {#              document.getElementById('status').innerHTML = '';#}
               $('#login-with-facebook').css('display', 'none');
-              $('#facebook-image').append("<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='35' style='border-radius: 15px;'></img>");
+              $('#facebook-image').append("<a class='facebook-img' href='#' onclick='dropdownOptions();'>" +
+                      "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='35' style='border-radius: 15px;'></img>" +
+                      "</a>");
 
             });
           }
         </script>
+
+        <script>
+            function dropdownOptions() {
+                var dropdown = $('.dropdown');
+                if (dropdown.css('display') !== 'none') {
+                    dropdown.css('display', 'none');
+                } else {
+                    dropdown.css('display', 'block');
+                }
+            }
+        </script>
     </head>
     <style>
-        #map-canvas {
-            height: 500px;
-            width: 105%;
-            margin: 0 auto;
-            position: relative;
-            left: -2.5%;
+
+        .dropdown {
+            width: 75px;
+            padding-top: 10px;
+            z-index: 100;
+            position: absolute;
+            display: none;
         }
 
-        #facebook-image {
-            text-align: center;
+        .dropdown ul,li {
+            list-style-type: none;
+            list-style-position: inside;
+            padding: 5px 0 5px 0;
+            font-size: 13px;
+            background: lightgray;
+            color: black;
+            font-weight: 300;
+        }
+
+        .dropdown-list a:hover {
+            background-color: #30bdff;
         }
 
     </style>
@@ -221,16 +252,17 @@
                                    <a href="#"><img id="iconImg" src={% static 'img/standforhumanity.png' %} width="300" /></a>
                                </div>
                             </td>
-                            <td width="75" class="header-tab">
+                            <div style="float:right;">
+                            <td class="header-tab">
                                 <a class="tab-link" href="#map">Map</a>
                             </td>
-                            <td width="100" class="header-tab">
+                            <td class="header-tab">
                                 <a class="tab-link" href="#thecause">The Cause</a>
                             </td>
-                            <td width="75" class="header-tab">
+                            <td class="header-tab">
                                 <a class="tab-link" href="#about">About</a>
                             </td>
-                            <td width="100" class="header-tab">
+                            <td class="header-tab">
                                 <a class="tab-link" href="#theimpact">The Impact</a>
                             </td>
                             <td width="75" class="header-tab">
@@ -239,7 +271,13 @@
                                     <a class="tab-link" href="#" onClick="loginUser(); return false;">Login</a>
                                 </div>
                                 <div id="facebook-image"></div>
+                                <div class="dropdown">
+                                    <ul class="dropdown-list">
+                                        <a href="#" onclick="logoutUser(); return false;"><li>Logout</li></a>
+                                    </ul>
+                                </div>
                             </td>
+                            </div>
                         </tr>
                     </table>
                 </div>

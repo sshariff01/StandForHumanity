@@ -11,7 +11,7 @@ body {
 
 #header {
     width: 82%;
-    min-width: 867px;
+    min-width: 937px;
     max-width: 1024px;
     margin: 0 auto;
     padding: 15px;
@@ -74,4 +74,16 @@ body {
     font-weight: 200;
     font-size: 19px;
     padding: 10px 0px 40px 0px;
+}
+
+#map-canvas {
+    height: 500px;
+    width: 102%;
+    margin: 0 auto;
+    position: relative;
+    left: -1%;
+}
+
+#facebook-image {
+    text-align: center;
 }
