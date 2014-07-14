@@ -57,6 +57,7 @@ body {
     text-align: center;
     color: #e0eafd;
     padding: 40px 0px 40px 0px;
+    font-weight: 400;
 }
 
 .subtag1 {
@@ -86,4 +87,19 @@ body {
 
 #facebook-image {
     text-align: center;
+}
+
+.getonthemap-container {
+    background: powderblue;
+}
+
+.button-container {
+    padding: 30px;
+    width: 322px;
+    margin: 0 auto;
+}
+
+.button-container button {
+    font-family: 'Helvetica';
+    font-weight: 200;
 }
