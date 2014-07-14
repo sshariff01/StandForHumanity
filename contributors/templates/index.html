@@ -18,6 +18,7 @@
         <link rel="stylesheet" href={% static 'css/main.css' %}>
 
         <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
+{#        <script src={% static 'js/jquery.transit.min.js' %}></script>#}
 
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
         <script>
@@ -214,7 +215,41 @@
                     dropdown.css('display', 'block');
                 }
             }
+
+            function openGotmPopup() {
+
+            }
+
+            function closeGotmPopup() {
+
+            }
         </script>
+
+        <script type="text/javascript">
+            //This is the function that closes the pop-up
+            function endBlackout(){
+                $(".blackout").css("display", "none");
+{#                $(".blackout").transition({ opacity: 0 });#}
+                $(".msgbox").css("display", "none");
+{#                $(".msgbox").transition({ opacity: 0 });#}
+            }
+
+            //This is the function that starts the pop-up
+            function strtBlackout(){
+                $(".msgbox").css("display", "block");
+{#                $(".msgbox").transition({ opacity: 1 });#}
+                $(".blackout").css("display", "block");
+{#                $(".blackout").transition({ opacity: 1 });#}
+            }
+
+            //Sets the buttons to trigger the blackout on clicks
+            $(document).ready(function(){
+                $("#gtom-button").click(strtBlackout); // open if btn is pressed
+                $(".blackout").click(endBlackout); // close if click outside of popup
+                $(".closeBox").click(endBlackout); // close if close btn clicked
+            });
+        </script>
+
     </head>
     <style>
 
@@ -294,7 +329,16 @@
 {#            </div>#}
             <div class="getonthemap-container">
                 <div class="button-container">
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Get on the Map</button>
+                    <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='#'">Get on the Map</button>
+                    <div class="blackout"></div>
+                    <div class="msgbox">
+                        <div class="closeBox">Close</div>
+                        <br /><br /><br /><br />
+                        <center>
+                            <form action="#" method="post">Fill content here<br />
+                            </form>
+                        </center>
+                    </div>
                 </div>
             </div>
             <div class="map-container">
