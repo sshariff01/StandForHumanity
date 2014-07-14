@@ -20,7 +20,9 @@
         <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
 {#        <script src={% static 'js/jquery.transit.min.js' %}></script>#}
 
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&v=3.exp"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+
         <script>
             function initialize() {
               // Create an array of styles.
@@ -59,13 +61,26 @@
               // Create a map object, and include the MapTypeId to add
               // to the map type control.
               var mapOptions = {
-                zoom: 3,
-                center: new google.maps.LatLng(55.6468, 37.581),
+                zoom: 4,
+{#                center: new google.maps.LatLng(55.6468, 37.581),#}
                 mapTypeControlOptions: {
                   mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
                 }
               };
 
+              var map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+
+
+              var input = /** @type {HTMLInputElement} */(
+                document.getElementById('pac-input'));
+
+{#              var types = document.getElementById('type-selector');#}
+{#              map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);#}
+{#              map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);#}
+
+              var autocomplete = new google.maps.places.Autocomplete(input);
+              autocomplete.bindTo('bounds', map);
 
               // Try W3C Geolocation (Preferred)
               if(navigator.geolocation) {
@@ -94,8 +109,31 @@
                 map.setCenter(initialLocation);
               }
 
-              var map = new google.maps.Map(document.getElementById('map-canvas'),
-                mapOptions);
+
+              google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
+
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
+              });
 
               //Associate the styled map with the MapTypeId and set it to display.
               map.mapTypes.set('map_style', styledMap);
@@ -309,6 +347,15 @@
             background-color: #30bdff;
         }
 
+        #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
     </style>
     <body>
         <div class="header-container" >
@@ -375,6 +422,8 @@
                     </div>
                 </div>
             </div>
+            <input id="pac-input" class="controls" type="text"
+                placeholder="Enter a location">
             <div class="map-container">
                 <div id="map-canvas"></div>
             </div>
