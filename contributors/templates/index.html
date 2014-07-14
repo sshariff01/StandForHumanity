@@ -115,11 +115,35 @@
               );
           }
 
+          function ensureLogin() {
+              FB.getLoginStatus(function(response) {
+{#                statusChangeCallback(response);#}
+                  console.log(response);
+                  if (response.status != 'connected') {
+                      FB.login(
+                              function(response) {
+                                  checkLoginState();
+                                  popupAfterLogin(response);
+                              },
+                              {scope:'user_likes, offline_access, publish_actions'}
+                      );
+                  } else {
+                      popupAfterLogin(response);
+                  }
+              });
+          }
+
           function logoutUser() {
               FB.logout(function(response) {
                 // user is now logged out
                 location.reload();
               });
+          }
+
+          function popupAfterLogin(response) {
+              if (response.status=='connected') {
+                  strtBlackout();
+              }
           }
 
           function shareWithFacebook() {
@@ -132,11 +156,9 @@
                 description: 'Support the cause and join hundreds of others to take a stand for humanity. ' +
                         'We\'re creating a movement.'
               }, function(response){
-{#                  if (response && !response.error_code) {#}
-{#                      alert('Posting completed.');#}
-{#                    } else {#}
-{#                      alert('Error while posting.');#}
-{#                    }#}
+                  if (response && !response.error_code) {
+                      endBlackout();
+                  }
               });
           }
           // This is called with the results from from FB.getLoginStatus().
@@ -152,13 +174,9 @@
               testAPI();
             } else if (response.status === 'not_authorized') {
               // The person is logged into Facebook, but not your app.
-{#              document.getElementById('status').innerHTML = 'Please log ' +#}
-{#                'into this app.';#}
             } else {
               // The person is not logged into Facebook, so we're not sure if
               // they are logged into this app or not.
-{#              document.getElementById('status').innerHTML = 'Please log ' +#}
-{#                'into Facebook.';#}
             }
           }
 
@@ -211,10 +229,8 @@
           // successful.  See statusChangeCallback() for when this call is made.
           function testAPI() {
             console.log('Welcome!  Fetching your information.... ');
-{#            var fbID = FB.getAuthResponse().userID#}
             FB.api('/me', function(response) {
               console.log('Successful login for: ' + response.name);
-{#              document.getElementById('status').innerHTML = '';#}
               $('#login-with-facebook').css('display', 'none');
               $('#facebook-image').append("<a class='facebook-img' href='#' onclick='dropdownOptions();'>" +
                       "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='35' style='border-radius: 15px;'></img>" +
@@ -262,7 +278,7 @@
 
             //Sets the buttons to trigger the blackout on clicks
             $(document).ready(function(){
-                $("#gtom-button").click(strtBlackout); // open if btn is pressed
+{#                $("#gtom-button").click(strtBlackout); // open if btn is pressed#}
                 $(".blackout").click(endBlackout); // close if click outside of popup
                 $(".closeBox").click(endBlackout); // close if close btn clicked
             });
@@ -319,7 +335,6 @@
                                 <a class="tab-link" href="#theimpact">The Impact</a>
                             </td>
                             <td width="75" class="header-tab">
-{#                                <a class="tab-link" href="#">Login</a>#}
                                 <div id="login-with-facebook">
                                     <a class="tab-link" href="#" onClick="loginUser(); return false;">Login</a>
                                 </div>
@@ -347,7 +362,7 @@
 {#            </div>#}
             <div class="getonthemap-container">
                 <div class="button-container">
-                    <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='#'">Get on the Map</button>
+                    <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();">Get on the Map</button>
                     <div class="blackout"></div>
                     <div class="msgbox">
                         <div class="closeBox">Close</div>

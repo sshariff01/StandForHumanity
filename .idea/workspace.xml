@@ -8,7 +8,7 @@
     <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405297714855" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298232402" ignored="false" />
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298217674" ignored="false" />
-    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405373416960" ignored="false" />
+    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405376770199" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +43,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="28" selection-start="5098" selection-end="5098" vertical-scroll-proportion="0.7385399">
+            <state line="337" column="0" selection-start="13119" selection-end="13119" vertical-scroll-proportion="-0.29881155">
               <folding>
                 <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -515,7 +515,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="28" selection-start="5098" selection-end="5098" vertical-scroll-proportion="0.7385399">
+        <state line="337" column="0" selection-start="13119" selection-end="13119" vertical-scroll-proportion="-0.29881155">
           <folding>
             <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
