@@ -8,7 +8,7 @@
     <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405297714855" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298232402" ignored="false" />
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298217674" ignored="false" />
-    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405382574126" ignored="false" />
+    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405401111718" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +41,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="365" column="24" selection-start="14001" selection-end="14001" vertical-scroll-proportion="0.38879457">
+            <state line="128" column="24" selection-start="5376" selection-end="5376" vertical-scroll-proportion="0.6480447">
               <folding />
             </state>
           </provider>
@@ -96,9 +96,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="22" />
-    <option name="width" value="1278" />
-    <option name="height" value="774" />
+    <option name="x" value="1280" />
+    <option name="y" value="-449" />
+    <option name="width" value="1355" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -362,14 +363,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1278" height="774" extended-state="0" />
+    <frame x="1280" y="-449" width="1355" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23529412" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -534,7 +535,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="365" column="24" selection-start="14001" selection-end="14001" vertical-scroll-proportion="0.38879457">
+        <state line="128" column="24" selection-start="5376" selection-end="5376" vertical-scroll-proportion="0.6480447">
           <folding />
         </state>
       </provider>

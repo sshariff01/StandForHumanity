@@ -35,21 +35,6 @@
                     { "saturation": -6 },
                     { "hue": "#00bbff" }
                   ]
-{#                },{#}
-{#                  featureType: "road",#}
-{#                  elementType: "geometry",#}
-{#                  stylers: [#}
-{#                    { hue: "#010b17" },#}
-{#                    { lightness: 0 },#}
-{#                    { visibility: "simplified" }#}
-{#                  ]#}
-{#                },{#}
-{#                  featureType: "road",#}
-{#                  elementType: "labels",#}
-{#                  stylers: [#}
-{#                    { hue: "#010b17" },#}
-{#                    { visibility: "off" }#}
-{#                  ]#}
                 }
               ];
 
@@ -64,23 +49,17 @@
                 zoom: 4,
                 mapTypeControl: false,
                 panControl: false
-{#                center: new google.maps.LatLng(55.6468, 37.581),#}
-{#                mapTypeControlOptions: {#}
-{#                  mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']#}
-{#                }#}
               };
 
               var map = new google.maps.Map(document.getElementById('map-canvas'),
                 mapOptions);
 
+              var dialogInput = (document.getElementById('dialog-input'));
+              var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
+              dialogAutocomplete.bindTo('bounds', map);
 
               var input = /** @type {HTMLInputElement} */(
                 document.getElementById('pac-input'));
-
-{#              var types = document.getElementById('type-selector');#}
-{#              map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);#}
-{#              map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);#}
-
               var autocomplete = new google.maps.places.Autocomplete(input);
               autocomplete.bindTo('bounds', map);
 
@@ -114,6 +93,31 @@
 
               google.maps.event.addListener(autocomplete, 'place_changed', function() {
                 var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
+
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
+              });
+
+              google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
+                var place = dialogAutocomplete.getPlace();
                 if (!place.geometry) {
                   return;
                 }
@@ -359,7 +363,7 @@
 
         #pac-input {
             position: absolute;
-            z-index: 200;
+            z-index: 50;
             background-color: #fff;
             border-radius: 3px;
             margin-top: 10px;
@@ -436,10 +440,8 @@
                         <div class="closeBox">Close</div>
                         <br /><br /><br /><br />
                         <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="shareWithFacebook();">Post to FB</button>
-                        <center>
-                            <form action="#" method="post">Fill content here<br />
-                            </form>
-                        </center>
+                        <br />
+                        <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
                     </div>
                 </div>
             </div>
