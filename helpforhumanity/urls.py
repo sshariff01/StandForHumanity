@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', contributors.views.index, name='index'),
+    url(r'^postToMap/', contributors.views.postToMap, name='postToMap'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

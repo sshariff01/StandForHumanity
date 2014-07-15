@@ -69,7 +69,8 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                   initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                   map.setCenter(initialLocation);
-                }, function() {
+                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  }, function() {
                   handleNoGeolocation(browserSupportFlag);
                 });
               }
@@ -88,7 +89,9 @@
                   initialLocation = siberia;
                 }
                 map.setCenter(initialLocation);
+                $('input[name="map-coordinates"]').val(map.getCenter());
               }
+
 
 
               google.maps.event.addListener(autocomplete, 'place_changed', function() {
@@ -100,9 +103,11 @@
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates"]').val(map.getCenter());
                   map.setZoom(4);
                 } else {
                   map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates"]').val(map.getCenter());
                   map.setZoom(4);  // Why 17? Because it looks good.
                 }
 
@@ -125,9 +130,11 @@
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates"]').val(map.getCenter());
                   map.setZoom(4);
                 } else {
                   map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates"]').val(map.getCenter());
                   map.setZoom(4);  // Why 17? Because it looks good.
                 }
 
@@ -145,6 +152,8 @@
               map.mapTypes.set('map_style', styledMap);
               map.setMapTypeId('map_style');
             }
+
+
 
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
@@ -202,6 +211,7 @@
               }, function(response){
                   if (response && !response.error_code) {
                       endBlackout();
+                      postToMap(FB.getAuthResponse().userID);
                   }
               });
           }
@@ -294,14 +304,55 @@
                 }
             }
 
-            function openGotmPopup() {
+            function selectShareWithFacebook() {
+                $('.option-share').css('display', 'none');
+                $('.set-location').css('display', 'block');
+            }
+
+            function postToMap(fbID) {
+                var csrftoken = getCookie('csrftoken');
+                var formData = { facebookId:"fbID", hello:"world", csrfmiddlewaretoken:csrftoken };
+
+{#                $.ajax({#}
+{#                    type: "POST",#}
+{#                    url: "/postToMap",#}
+{#                    data: formData,#}
+{#                    success: function(data, status) {#}
+{#                        location.reload();#}
+{#                    }#}
+{#                    latLng: $('input[name="map-coordinates"]').val()#}
+{#                });#}
+
+                $.post("/postToMap/",
+                    {
+                       facebookId:fbID,
+                       latLng: $('input[name="map-coordinates"]').val(),
+                       csrfmiddlewaretoken:csrftoken
+                    },
+                    function(data, success) {
+                        location.reload();
+                    });
 
             }
 
-            function closeGotmPopup() {
-
+            // using jQuery
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
             }
         </script>
+
 
         <script type="text/javascript">
             //This is the function that closes the pop-up
@@ -381,6 +432,10 @@
             padding-left: 10px;  /* Regular padding-left + 1. */
             width: 251px;
         }
+
+        .set-location {
+            display: none;
+        }
     </style>
     <body>
         <div class="header-container" >
@@ -438,10 +493,15 @@
                     <div class="blackout"></div>
                     <div class="msgbox">
                         <div class="closeBox">Close</div>
-                        <br /><br /><br /><br />
-                        <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="shareWithFacebook();">Post to FB</button>
                         <br />
-                        <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                        <div class="option-share">
+                            <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="selectShareWithFacebook();">Post to FB</button>
+                        </div>
+                        <div class="set-location">
+                            <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                            <input id="map-coordinates" name="map-coordinates" type="hidden" value="">
+                            <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                        </div>
                     </div>
                 </div>
             </div>
