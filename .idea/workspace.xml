@@ -29,10 +29,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contributors/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="17" selection-start="1345" selection-end="1345" vertical-scroll-proportion="0.7988506">
+            <state line="34" column="86" selection-start="1030" selection-end="1030" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -40,10 +40,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="515" column="22" selection-start="21902" selection-end="21902" vertical-scroll-proportion="-11.375">
+            <state line="270" column="42" selection-start="11448" selection-end="11448" vertical-scroll-proportion="0.48795182">
               <folding />
             </state>
           </provider>
@@ -92,9 +92,9 @@
         <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
         <option value="$PROJECT_DIR$/contributors/models.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/js/paypal-button.min.js" />
-        <option value="$PROJECT_DIR$/contributors/templates/index.html" />
         <option value="$PROJECT_DIR$/helpforhumanity/urls.py" />
         <option value="$PROJECT_DIR$/contributors/views.py" />
+        <option value="$PROJECT_DIR$/contributors/templates/index.html" />
       </list>
     </option>
   </component>
@@ -558,13 +558,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="515" column="22" selection-start="21902" selection-end="21902" vertical-scroll-proportion="-11.375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helpforhumanity/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="0" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
@@ -574,10 +567,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="17" selection-start="1345" selection-end="1345" vertical-scroll-proportion="0.7988506">
+        <state line="34" column="86" selection-start="1030" selection-end="1030" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="270" column="42" selection-start="11448" selection-end="11448" vertical-scroll-proportion="0.48795182">
+          <folding />
         </state>
       </provider>
     </entry>
