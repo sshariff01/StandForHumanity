@@ -333,13 +333,13 @@
             }
 
             function postToMap(fbID) {
-                var csrftoken = getCookie('csrftoken');
+{#                var csrftoken = getCookie('csrftoken');#}
                 $.post("/postToMap/",
                     {
                        facebookId:fbID,
                        lat: $('input[name="map-coordinates-lat"]').val(),
                        lng: $('input[name="map-coordinates-lng"]').val(),
-                       csrfmiddlewaretoken:csrftoken
+                       csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
                     },
                     function(data, success) {
                         location.reload();
@@ -512,6 +512,7 @@
                         </div>
                         <div class="set-location">
                             <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                            {% csrf_token %}
                             <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
                             <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
                             <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
