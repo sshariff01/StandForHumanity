@@ -62,10 +62,12 @@
               // to the map type control.
               var mapOptions = {
                 zoom: 4,
+                mapTypeControl: false,
+                panControl: false
 {#                center: new google.maps.LatLng(55.6468, 37.581),#}
-                mapTypeControlOptions: {
-                  mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
-                }
+{#                mapTypeControlOptions: {#}
+{#                  mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']#}
+{#                }#}
               };
 
               var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -347,15 +349,34 @@
             background-color: #30bdff;
         }
 
+        #autocomplete-container {
+            width: 82%;
+            margin: 0 auto;
+            min-width: 937px;
+            max-width: 1024px;
+
+        }
+
         #pac-input {
-        background-color: #fff;
-        padding: 0 11px 0 13px;
-        width: 400px;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        text-overflow: ellipsis;
-      }
+            position: absolute;
+            z-index: 200;
+            background-color: #fff;
+            border-radius: 3px;
+            margin-top: 10px;
+            padding: 3px 11px 1px 8px;
+            width: 250px;
+{#            font-family: Roboto;#}
+            font-size: 13px;
+            font-weight: 300;
+            text-overflow: ellipsis;
+        }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+            margin-left: -1px;
+            padding-left: 10px;  /* Regular padding-left + 1. */
+            width: 251px;
+        }
     </style>
     <body>
         <div class="header-container" >
@@ -422,9 +443,13 @@
                     </div>
                 </div>
             </div>
-            <input id="pac-input" class="controls" type="text"
-                placeholder="Enter a location">
+
             <div class="map-container">
+                <div id="autocomplete-container">
+                    <div id="pac-input-container">
+                        <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+                    </div>
+                </div>
                 <div id="map-canvas"></div>
             </div>
         </div>
