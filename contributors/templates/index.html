@@ -268,7 +268,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',
+            appId      : '1437376213194117',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -333,7 +333,6 @@
             }
 
             function postToMap(fbID) {
-{#                var csrftoken = getCookie('csrftoken');#}
                 $.post("/postToMap/",
                     {
                        facebookId:fbID,
@@ -344,23 +343,6 @@
                     function(data, success) {
                         location.reload();
                     });
-            }
-
-            // using jQuery
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
             }
         </script>
 
@@ -516,6 +498,19 @@
                             <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
                             <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
                             <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                        </div>
+                        <div class="pay-with-paypal">
+                            <script async="async" src="/static/js/paypal-button.min.js?merchant=8WYX56JUJTZPU"
+                                data-button="buynow"
+                                data-name="StandForHumanity"
+                                data-quantity="1"
+                                data-amount="25.00"
+                                data-currency="CAD"
+                                data-shipping="0"
+                                data-tax="0"
+                                data-callback="http://standforhumanity.herokuapp.com"
+                                data-env="sandbox"
+                            ></script>
                         </div>
                     </div>
                 </div>

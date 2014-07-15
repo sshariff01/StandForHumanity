@@ -2,6 +2,8 @@ from django.shortcuts import render
 from contributors.models import Contributor
 from django.utils import timezone
 from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
 import json
 
 # Create your views here.
@@ -37,4 +39,8 @@ def postToMap(request):
         contributor.lng = request.POST.get('lng', False).encode('utf8')
 
     contributor.save()
+    return HttpResponseRedirect('/')
+
+@csrf_exempt
+def ipn(request):
     return HttpResponseRedirect('/')

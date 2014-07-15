@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 
-# from contributors import views as contributorsviews
 import contributors.views
 
 admin.autodiscover()
@@ -14,6 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^$', contributors.views.index, name='index'),
     url(r'^postToMap/', contributors.views.postToMap, name='postToMap'),
+    url(r'^ipn/', contributors.views.ipn, name='ipn'),
 
     url(r'^admin/', include(admin.site.urls)),
 )
