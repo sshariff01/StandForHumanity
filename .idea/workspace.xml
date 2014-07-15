@@ -5,10 +5,10 @@
     <ignored path="HelpForHumanity.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/settings.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405297654113" ignored="false" />
-    <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405297714855" ignored="false" />
+    <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405401756988" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298232402" ignored="false" />
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405298217674" ignored="false" />
-    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405401111718" ignored="false" />
+    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405401707029" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,10 +38,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="128" column="24" selection-start="5376" selection-end="5376" vertical-scroll-proportion="0.6480447">
+            <state line="101" column="57" selection-start="4220" selection-end="4220" vertical-scroll-proportion="-7.9166665">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/contributors/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="41" selection-start="215" selection-end="215" vertical-scroll-proportion="0.08250825">
               <folding />
             </state>
           </provider>
@@ -85,13 +94,13 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/helpforhumanity/wsgi.py" />
-        <option value="$PROJECT_DIR$/contributors/models.py" />
         <option value="$PROJECT_DIR$/contributors/views.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/urls.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/js/jquery.transit.min.js" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/css/main.css" />
         <option value="$PROJECT_DIR$/contributors/templates/index.html" />
+        <option value="$PROJECT_DIR$/contributors/models.py" />
       </list>
     </option>
   </component>
@@ -486,13 +495,6 @@
         <state line="15" column="41" selection-start="447" selection-end="447" vertical-scroll-proportion="0.24089935" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contributors/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="37" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/contributors/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="11" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0">
@@ -535,7 +537,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="24" selection-start="5376" selection-end="5376" vertical-scroll-proportion="0.6480447">
+        <state line="101" column="57" selection-start="4220" selection-end="4220" vertical-scroll-proportion="-7.9166665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contributors/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="41" selection-start="215" selection-end="215" vertical-scroll-proportion="0.08250825">
           <folding />
         </state>
       </provider>
