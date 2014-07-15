@@ -69,7 +69,8 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                   initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                   map.setCenter(initialLocation);
-                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
                   }, function() {
                   handleNoGeolocation(browserSupportFlag);
                 });
@@ -89,7 +90,8 @@
                   initialLocation = siberia;
                 }
                 map.setCenter(initialLocation);
-                $('input[name="map-coordinates"]').val(map.getCenter());
+                $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
               }
 
 
@@ -103,11 +105,13 @@
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
-                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
                   map.setZoom(4);
                 } else {
                   map.setCenter(place.geometry.location);
-                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
                   map.setZoom(4);  // Why 17? Because it looks good.
                 }
 
@@ -130,11 +134,13 @@
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
-                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
                   map.setZoom(4);
                 } else {
                   map.setCenter(place.geometry.location);
-                  $('input[name="map-coordinates"]').val(map.getCenter());
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
                   map.setZoom(4);  // Why 17? Because it looks good.
                 }
 
@@ -151,11 +157,28 @@
               //Associate the styled map with the MapTypeId and set it to display.
               map.mapTypes.set('map_style', styledMap);
               map.setMapTypeId('map_style');
+
+              google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
+
+              function addMarkers() {
+                  {% if contributors %}
+                    var json = "{{ contributors }}";
+                    var objJson = JSON.parse(JSON.stringify(json));
+                    objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+                    for (var i = 0; i < objJson.length; i++) {
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
+                            map: map
+                        });
+                    }
+                  {% endif %}
+              }
             }
 
 
 
             google.maps.event.addDomListener(window, 'load', initialize);
+
         </script>
 
         <script>
@@ -311,28 +334,16 @@
 
             function postToMap(fbID) {
                 var csrftoken = getCookie('csrftoken');
-                var formData = { facebookId:"fbID", hello:"world", csrfmiddlewaretoken:csrftoken };
-
-{#                $.ajax({#}
-{#                    type: "POST",#}
-{#                    url: "/postToMap",#}
-{#                    data: formData,#}
-{#                    success: function(data, status) {#}
-{#                        location.reload();#}
-{#                    }#}
-{#                    latLng: $('input[name="map-coordinates"]').val()#}
-{#                });#}
-
                 $.post("/postToMap/",
                     {
                        facebookId:fbID,
-                       latLng: $('input[name="map-coordinates"]').val(),
+                       lat: $('input[name="map-coordinates-lat"]').val(),
+                       lng: $('input[name="map-coordinates-lng"]').val(),
                        csrfmiddlewaretoken:csrftoken
                     },
                     function(data, success) {
                         location.reload();
                     });
-
             }
 
             // using jQuery
@@ -501,7 +512,8 @@
                         </div>
                         <div class="set-location">
                             <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
-                            <input id="map-coordinates" name="map-coordinates" type="hidden" value="">
+                            <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
+                            <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
                             <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
                         </div>
                     </div>
