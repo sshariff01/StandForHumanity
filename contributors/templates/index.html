@@ -268,7 +268,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',
+            appId      : '1437376213194117',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -339,6 +339,18 @@
                        lat: $('input[name="map-coordinates-lat"]').val(),
                        lng: $('input[name="map-coordinates-lng"]').val(),
                        csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
+                    },
+                    function(data, success) {
+                        location.reload();
+                    });
+            }
+
+            function testPost() {
+                $.post("/ipn/",
+                    {
+                       lat: $('input[name="map-coordinates-lat"]').val(),
+                       lng: $('input[name="map-coordinates-lng"]').val(),
+{#                       csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()#}
                     },
                     function(data, success) {
                         location.reload();
@@ -491,6 +503,7 @@
                         <br />
                         <div class="option-share">
                             <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="selectShareWithFacebook();">Post to FB</button>
+                            <button id="share-fb-button" type="button" onclick="testPost();">Test POST</button>
                         </div>
                         <div class="set-location">
                             <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">

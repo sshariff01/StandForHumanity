@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 import json
+import urllib2
+import logging
 
 # Create your views here.
 def index(request):
@@ -43,4 +45,26 @@ def postToMap(request):
 
 @csrf_exempt
 def ipn(request):
+    PAYPAL_IPN_CONF_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate'
+    post_params = ""
+    for key, value in request.POST.iteritems():
+        post_params += "&" + key + "=" + value
+
+    confirmation_url = PAYPAL_IPN_CONF_BASE_URL + post_params
+    print "CONFIRMATION URL: " + confirmation_url
+    confirmation_response = urllib2.urlopen(confirmation_url)
+    confirmation_data = confirmation_response.read()
+    print "CONFIRMATION DATA: " + confirmation_data
+    # confirmation_json = json.loads(confirmation_data)
+
+    if confirmation_data == "VERIFIED":
+        if request.POST.get('payment_status').encode('utf8'):
+            if request.POST.get('payment_status').encode('utf8') == "Completed":
+                contributor = Contributor.objects.filter(transaction_id=request.POST.get('txn_id').encode('utf8'))
+                if not contributor:
+                    contributor = Contributor.objects.create(contribution_date=timezone.now())
+                    contributor.transaction_id = request.POST.get('txn_id').encode('utf8')
+                    contributor.save()
+
+
     return HttpResponseRedirect('/')
