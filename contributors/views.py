@@ -44,7 +44,7 @@ def postToMap(request):
     return HttpResponseRedirect('/')
 
 @csrf_exempt
-def ipn(request):
+def ipn(self, request):
     PAYPAL_IPN_CONF_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate'
     post_params = ""
 
@@ -55,6 +55,9 @@ def ipn(request):
         print "THERE IS NO POST DATA"
         for key, value in request.GET.iteritems():
             post_params += "&" + key + "=" + value
+
+    if request.method == 'POST':
+        print "THIS WAS A POST REQUEST, RECEIVED HERE"
 
     confirmation_url = PAYPAL_IPN_CONF_BASE_URL + post_params
     print "CONFIRMATION URL: " + confirmation_url
