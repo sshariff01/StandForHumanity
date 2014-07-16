@@ -44,7 +44,7 @@ def postToMap(request):
     return HttpResponseRedirect('/')
 
 @csrf_exempt
-def ipn(self, request):
+def ipn(request):
     PAYPAL_IPN_CONF_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate'
     post_params = ""
 
