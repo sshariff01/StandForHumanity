@@ -51,7 +51,7 @@ def ipn(request):
     if request.POST:
         for key, value in request.POST.iteritems():
             post_params += "&" + key + "=" + value
-    else:
+    elif request.GET:
         print "THERE IS NO POST DATA"
         for key, value in request.GET.iteritems():
             post_params += "&" + key + "=" + value

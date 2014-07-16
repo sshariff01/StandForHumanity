@@ -7,7 +7,7 @@
     <file path="/settings.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405465512932" ignored="false" />
     <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405452619015" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405464620453" ignored="false" />
-    <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405475543885" ignored="false" />
+    <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405475771987" ignored="false" />
     <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405469788482" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,7 +32,7 @@
       <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="9" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.39770555">
+            <state line="50" column="19" selection-start="1517" selection-end="1517" vertical-scroll-proportion="0.31166348">
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -524,7 +524,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="9" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.39770555">
+        <state line="50" column="19" selection-start="1517" selection-end="1517" vertical-scroll-proportion="0.31166348">
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
