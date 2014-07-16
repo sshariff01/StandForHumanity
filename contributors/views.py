@@ -47,8 +47,12 @@ def postToMap(request):
 def ipn(request):
     PAYPAL_IPN_CONF_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate'
     post_params = ""
-    for key, value in request.POST.iteritems():
-        post_params += "&" + key + "=" + value
+
+    if request.POST:
+        for key, value in request.POST.iteritems():
+            post_params += "&" + key + "=" + value
+    else:
+        print "THERE IS NO POST DATA"
 
     confirmation_url = PAYPAL_IPN_CONF_BASE_URL + post_params
     print "CONFIRMATION URL: " + confirmation_url
