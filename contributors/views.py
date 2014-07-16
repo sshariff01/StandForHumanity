@@ -53,6 +53,8 @@ def ipn(request):
             post_params += "&" + key + "=" + value
     else:
         print "THERE IS NO POST DATA"
+        for key, value in request.GET.iteritems():
+            post_params += "&" + key + "=" + value
 
     confirmation_url = PAYPAL_IPN_CONF_BASE_URL + post_params
     print "CONFIRMATION URL: " + confirmation_url
