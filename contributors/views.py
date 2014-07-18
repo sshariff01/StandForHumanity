@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import urllib2
 import logging
+import stripe
 
 # Create your views here.
 def index(request):
@@ -43,37 +44,25 @@ def postToMap(request):
     contributor.save()
     return HttpResponseRedirect('/')
 
-@csrf_exempt
-def ipn(request):
-    # PAYPAL_IPN_CONF_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate'
-    # post_params = ""
-    #
-    # if request.POST:
-    #     for key, value in request.POST.iteritems():
-    #         post_params += "&" + key + "=" + value
-    # elif request.GET:
-    #     print "THERE IS NO POST DATA"
-    #     for key, value in request.GET.iteritems():
-    #         post_params += "&" + key + "=" + value
-    #
-    # if request.method == 'POST':
-    #     print "THIS WAS A POST REQUEST, RECEIVED HERE"
-    #
-    # confirmation_url = PAYPAL_IPN_CONF_BASE_URL + post_params
-    # print "CONFIRMATION URL: " + confirmation_url
-    # confirmation_response = urllib2.urlopen(confirmation_url)
-    # confirmation_data = confirmation_response.read()
-    # print "CONFIRMATION DATA: " + confirmation_data
-    # # confirmation_json = json.loads(confirmation_data)
-    #
-    # if confirmation_data == "VERIFIED":
-    #     if request.POST.get('payment_status').encode('utf8'):
-    #         if request.POST.get('payment_status').encode('utf8') == "Completed":
-    #             contributor = Contributor.objects.filter(transaction_id=request.POST.get('txn_id').encode('utf8'))
-    #             if not contributor:
-    #                 contributor = Contributor.objects.create(contribution_date=timezone.now())
-    #                 contributor.transaction_id = request.POST.get('txn_id').encode('utf8')
-    #                 contributor.save()
+def donate(request):
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here https://dashboard.stripe.com/account
+    stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+
+    # Get the credit card details submitted by the form
+    token = request.POST['stripeToken']
+
+    # Create the charge on Stripe's servers - this will charge the user's card
+    try:
+      charge = stripe.Charge.create(
+          amount=1000, # amount in cents, again
+          currency="usd",
+          card=token,
+          description="payinguser@example.com"
+      )
+    except stripe.CardError, e:
+      # The card has been declined
+      pass
 
 
     return HttpResponseRedirect('/')

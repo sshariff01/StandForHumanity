@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^$', contributors.views.index, name='index'),
     url(r'^postToMap/', contributors.views.postToMap, name='postToMap'),
-    url(r'^ipn/', contributors.views.ipn, name='ipn'),
+    url(r'^donate/', contributors.views.donate, name='donate'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

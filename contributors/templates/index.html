@@ -20,6 +20,9 @@
         <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
 {#        <script src={% static 'js/jquery.transit.min.js' %}></script>#}
 
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&v=3.exp"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 
@@ -503,7 +506,34 @@
                         <br />
                         <div class="option-share">
                             <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="selectShareWithFacebook();">Post to FB</button>
-                            <button id="share-fb-button" type="button" onclick="testPost();">Test POST</button>
+                        </div>
+                        <br />
+                        <div class="option-donate">
+                            <form action="/donate/" method="POST">
+                                <button id="customButton">Purchase</button>
+                                {% csrf_token %}
+                                <script>
+                                   $('#customButton').click(function(){
+                                       var token = function(res){
+                                       var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                       $('form').append($input).submit();
+                                     };
+
+                                     StripeCheckout.open({
+                                       key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+                                       address:     false,
+                                       amount:      5000,
+                                       currency:    'cad',
+                                       name:        'Joes Pistachios',
+                                       description: 'A bag of Pistachios',
+                                       panelLabel:  'Checkout',
+                                       token:       token
+                                     });
+
+                                     return false;
+                                   });
+                                </script>
+                            </form>
                         </div>
                         <div class="set-location">
                             <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
