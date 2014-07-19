@@ -311,6 +311,7 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
               console.log('Successful login for: ' + response.name);
+              $('input[name="fb-id"]').val(FB.getAuthResponse().userID);
               $('#login-with-facebook').css('display', 'none');
               $('#facebook-image').append("<a class='facebook-img' href='#' onclick='dropdownOptions();'>" +
                       "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='35' style='border-radius: 15px;'></img>" +
@@ -512,6 +513,9 @@
                             <form action="/donate/" method="POST">
                                 <button id="customButton">Purchase</button>
                                 {% csrf_token %}
+                                <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
+                                <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
+                                <input id="fb-id" name="fb-id" type="hidden" value="">
                                 <script>
                                    $('#customButton').click(function(){
                                        var token = function(res){
@@ -538,8 +542,7 @@
                         <div class="set-location">
                             <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
                             {% csrf_token %}
-                            <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
-                            <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
+
                             <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
                         </div>
                     </div>

@@ -11,7 +11,7 @@ import stripe
 
 # Create your views here.
 def index(request):
-    contributors = Contributor.objects.all()
+    contributors = Contributor.objects.all().exclude(facebook_id=0)
     lat = []
     lng =[]
 
@@ -60,6 +60,16 @@ def donate(request):
           card=token,
           description="payinguser@example.com"
       )
+
+      contributor = Contributor.objects.create(contribution_date=timezone.now())
+      if request.POST.get('fb-id', False):
+        contributor.facebook_id = request.POST.get('fb-id', False).encode('utf8')
+      if request.POST.get('map-coordinates-lat', False):
+        contributor.lat = request.POST.get('map-coordinates-lat', False).encode('utf8')
+      if request.POST.get('map-coordinates-lng', False):
+        contributor.lng = request.POST.get('map-coordinates-lng', False).encode('utf8')
+      contributor.save()
+
     except stripe.CardError, e:
       # The card has been declined
       pass
