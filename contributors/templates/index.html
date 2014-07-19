@@ -271,7 +271,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',
+            appId      : '1437376213194117',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -333,7 +333,15 @@
 
             function selectShareWithFacebook() {
                 $('.option-share').css('display', 'none');
-                $('.set-location').css('display', 'block');
+                $('.option-donate').css('display', 'none');
+{#                $('.donate').css('display', 'none');#}
+                $('.post-to-fb').css('display', 'block');
+            }
+
+            function selectMakeADonation() {
+                $('.option-donate').css('display', 'none');
+                $('.option-share').css('display', 'none');
+                $('.donate').css('display', 'block');
             }
 
             function postToMap(fbID) {
@@ -371,7 +379,9 @@
                 $(".msgbox").css("display", "none");
 {#                $(".msgbox").transition({ opacity: 0 });#}
                 $('.option-share').css('display', 'block');
-                $('.set-location').css('display', 'none');
+                $('.post-to-fb').css('display', 'none');
+                $('.option-donate').css('display', 'block');
+                $('.donate').css('display', 'none');
             }
 
             //This is the function that starts the pop-up
@@ -380,6 +390,10 @@
 {#                $(".msgbox").transition({ opacity: 1 });#}
                 $(".blackout").css("display", "block");
 {#                $(".blackout").transition({ opacity: 1 });#}
+                $('.option-share').css('display', 'block');
+                $('.post-to-fb').css('display', 'none');
+                $('.option-donate').css('display', 'block');
+                $('.donate').css('display', 'none');
             }
 
             //Sets the buttons to trigger the blackout on clicks
@@ -387,6 +401,10 @@
 {#                $("#gtom-button").click(strtBlackout); // open if btn is pressed#}
                 $(".blackout").click(endBlackout); // close if click outside of popup
                 $(".closeBox").click(endBlackout); // close if close btn clicked
+
+                $("input#otherInput").keyup(function(){
+                  $("input#otherAmount").val($(this).val() + "00");
+                });
             });
         </script>
 
@@ -508,14 +526,32 @@
                         <div class="option-share">
                             <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="selectShareWithFacebook();">Post to FB</button>
                         </div>
-                        <br />
+                        <div class="post-to-fb">
+                            <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                            {% csrf_token %}
+                            <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                        </div>
+                        <br/>
+
                         <div class="option-donate">
+                            <button id="donate-button" type="button" class="btn btn-primary btn-lg" onclick="selectMakeADonation();">Make a Donation</button>
+                        </div>
+                        <div class="donate">
                             <form action="/donate/" method="POST">
-                                <button id="customButton">Purchase</button>
+                                <button id="customButton" class="btn btn-primary">Donate</button>
                                 {% csrf_token %}
                                 <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
                                 <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
                                 <input id="fb-id" name="fb-id" type="hidden" value="">
+                                <br/>
+                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                                <br/>
+                                <input type="radio" name="amount" value="500">5.00<br/>
+                                <input type="radio" name="amount" value="1000" checked>10.00<br/>
+                                <input type="radio" name="amount" value="2500" checked>25.00<br/>
+                                <input type="radio" name="amount" value="5000" checked>50.00<br/>
+                                <input type="radio" name="amount" id="otherAmount" value="" checked>Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
+
                                 <script>
                                    $('#customButton').click(function(){
                                        var token = function(res){
@@ -526,7 +562,7 @@
                                      StripeCheckout.open({
                                        key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
                                        address:     false,
-                                       amount:      5000,
+                                       amount:      $('input[name="amount"]:checked').val(),
                                        currency:    'cad',
                                        name:        'Joes Pistachios',
                                        description: 'A bag of Pistachios',
@@ -538,12 +574,6 @@
                                    });
                                 </script>
                             </form>
-                        </div>
-                        <div class="set-location">
-                            <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
-                            {% csrf_token %}
-
-                            <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
                         </div>
                     </div>
                 </div>

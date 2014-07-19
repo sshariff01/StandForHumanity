@@ -8,7 +8,7 @@
     <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405452619015" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405726027232" ignored="false" />
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405748695929" ignored="false" />
-    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405748589764" ignored="false" />
+    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405799729746" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +43,16 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="273" column="42" selection-start="11614" selection-end="11614" vertical-scroll-proportion="0.33333334">
+            <state line="405" column="64" selection-start="17395" selection-end="17395" vertical-scroll-proportion="0.5604396">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/helpforhumanity/static/css/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="91" column="24" selection-start="1413" selection-end="1413" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -88,12 +97,12 @@
       <list>
         <option value="$PROJECT_DIR$/helpforhumanity/wsgi.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/js/jquery.transit.min.js" />
-        <option value="$PROJECT_DIR$/helpforhumanity/static/css/main.css" />
         <option value="$PROJECT_DIR$/contributors/models.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/js/paypal-button.min.js" />
         <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/urls.py" />
         <option value="$PROJECT_DIR$/contributors/views.py" />
+        <option value="$PROJECT_DIR$/helpforhumanity/static/css/main.css" />
         <option value="$PROJECT_DIR$/contributors/templates/index.html" />
       </list>
     </option>
@@ -470,13 +479,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/helpforhumanity/static/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="16" selection-start="1281" selection-end="1281" vertical-scroll-proportion="0.028680688">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/logging/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1589" column="0" selection-start="55622" selection-end="55622" vertical-scroll-proportion="0.0" />
@@ -512,9 +514,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/helpforhumanity/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="24" selection-start="1413" selection-end="1413" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="273" column="42" selection-start="11614" selection-end="11614" vertical-scroll-proportion="0.33333334">
+        <state line="405" column="64" selection-start="17395" selection-end="17395" vertical-scroll-proportion="0.5604396">
           <folding />
         </state>
       </provider>
