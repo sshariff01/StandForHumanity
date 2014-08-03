@@ -197,14 +197,29 @@
 
           function addMarkers() {
               {% if contributors %}
+                var infowindow = new google.maps.InfoWindow();
                 var json = "{{ contributors }}";
                 var objJson = JSON.parse(JSON.stringify(json));
                 objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
                 for (var i = 0; i < objJson.length; i++) {
+                    var contentString = "<table>" +
+                        "<tr>" +
+                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v2.0/" + objJson[i].fb_id + "/picture?"+FB.getAuthResponse().accessToken+"' /></td>" +
+                        "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ objJson[i].name +"</h5><p style='font-size:10px'>Contributed "+ objJson[i].datestamp +"</td>" +
+                        "</tr>" +
+                        "</table>";
+
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
                         map: map,
-                        icon: "{% static 'img/fist.png' %}"
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/fist.png' %}",
+                        info: contentString
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.setContent(this.info);
+                        infowindow.open(map, this);
                     });
                 }
               {% endif %}
@@ -269,15 +284,16 @@
                         'We\'re creating a movement.'
               }, function(response){
                   if (response && !response.error_code) {
-                      postToMap(FB.getAuthResponse().userID);
+                      postToMap(FB.getAuthResponse().userID, FB.getAuthResponse().accessToken);
                   }
               });
           }
 
-          function postToMap(fbID) {
+          function postToMap(fbID, fbAccessToken) {
             $.post("/postToMap/",
                 {
                    facebookId:fbID,
+                   fbAccessToken:fbAccessToken,
                    lat: $('input[name="map-coordinates-lat"]').val(),
                    lng: $('input[name="map-coordinates-lng"]').val(),
                    csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
@@ -357,7 +373,7 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
               console.log('Successful login for: ' + response.name);
-              $('input[name="fb-id"]').val(FB.getAuthResponse().userID);
+              $('input[name="fb-access-token"]').val(FB.getAuthResponse().accessToken);
               $('#login-with-facebook').css('display', 'none');
               $('.dropdown').css('display', 'block !important');
               $('#facebook-image').append("<span class='caret' style='margin-right: 5px;'></span> " +
@@ -574,7 +590,7 @@
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
                             <div class="dialog-input-container">
-                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                                <input id="dialog-input" class="controls" type="text" placeholder="Current location">
                             </div>
                             <br />
                             <button type="button" class="btn btn-primary proceed-button" data-dismiss="modal" data-toggle="modal" data-target="#donateModal2">Proceed</button>
@@ -594,15 +610,12 @@
                                 {% csrf_token %}
                                 <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
                                 <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
-                                <input id="fb-id" name="fb-id" type="hidden" value="">
-                                <br/>
-                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
-                                <br/>
+                                <input id="fb-access-token" name="fb-access-token" type="hidden" value="">
                                 <input type="radio" name="amount" value="500">5.00<br/>
                                 <input type="radio" name="amount" value="1000" checked>10.00<br/>
-                                <input type="radio" name="amount" value="2500" checked>25.00<br/>
-                                <input type="radio" name="amount" value="5000" checked>50.00<br/>
-                                <input type="radio" name="amount" id="otherAmount" value="" checked>Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
+                                <input type="radio" name="amount" value="2500">25.00<br/>
+                                <input type="radio" name="amount" value="5000">50.00<br/>
+                                <input type="radio" name="amount" id="otherAmount" value="">Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
                                 <button id="customButton" class="btn btn-primary">Donate to the Cause</button>
 
                                 <script>
@@ -641,7 +654,7 @@
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
                             <div class="dialog-input-container">
-                                <input id="dialog-input2" class="controls" type="text" placeholder="Enter a location">
+                                <input id="dialog-input2" class="controls" type="text" placeholder="Current location">
                             </div>
                             <br />
                             <button id="donate-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
@@ -678,7 +691,7 @@
               <p>One cannot describe the situation in Gaza in any other term except 'genocide’. Israel has been pounding the Gaza Strip for almost four weeks, which killed at least 1,458 Palestinians and injured more than 8,300 others, an alarming portion of which are innocent, women, children, and youth, according to the Palestinian health ministry.</p>
               <p>Leadership in Canada, the United States, and U.K. have shown an astounding level of support for the state of Israel throughout the relentless violence and disproportionate aggression against the citizens of Palestine in an effort to create a Jewish-only state as part of the Zionist movement. Largely due to special-interest lobbying, U.S. taxpayers give Israel an average of $8 million per day, and since its creation have given more U.S. funds to Israel than to any other nation. As citizens around the world are learning about how Israel is using tax dollars, donations, and profits from trade, many are calling for an end to these expenditures.</p>
               <p>Support the cause to put an end to the world’s support for Israel and the destruction of Palestinian lives, families, and homes. Take a stand for humanity and put an end to the desecration of innocent lives. Join the movement.</p>
-              <p>100% of funds raised for this cause are donated directly to Gaza through Islamic Relief.</p>
+              <p><i>100% of funds raised for this cause are donated directly to Gaza through Islamic Relief</i></p>
           </div>
       </div>
 
@@ -717,7 +730,7 @@
               <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857143;">
                   <tr>
                       <td style="padding: 0 10px 10px 0;">
-                          <img src="{% static 'img/islamic-relief.png' %}" />
+                          <a href="http://www.islamic-relief.org/" target="_blank"><img src="{% static 'img/islamic-relief.png' %}" /></a>
                       </td>
                       <td style="vertical-align: top;">
                           <div >
