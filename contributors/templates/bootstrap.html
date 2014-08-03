@@ -1,0 +1,707 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stand For Humanity</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load staticfiles %}
+
+    <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- STRIPE API -->
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&libraries=places&sensor=false&v=3.exp"></script>
+
+    <script>
+        function initialize() {
+          // Create an array of styles.
+          var styles = [
+            {
+              stylers: [
+                { "gamma": 0.62 },
+                { "visibility": "simplified" },
+                { "lightness": -71 },
+                { "saturation": -6 },
+                { "hue": "#1d2325" }
+              ]
+            }
+          ];
+
+          // Create a new StyledMapType object, passing it the array of styles,
+          // as well as the name to be displayed on the map type control.
+          var styledMap = new google.maps.StyledMapType(styles,
+            {name: "Styled Map"});
+
+          // Create a map object, and include the MapTypeId to add
+          // to the map type control.
+          var mapOptions = {
+            zoom: 3,
+            mapTypeControl: false,
+            panControl: false
+          };
+
+          var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+
+          var dialogInput = (document.getElementById('dialog-input'));
+          var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
+          dialogAutocomplete.bindTo('bounds', map);
+
+          var dialogInput2 = (document.getElementById('dialog-input2'));
+          var dialogAutocomplete2 = new google.maps.places.Autocomplete(dialogInput2);
+          dialogAutocomplete2.bindTo('bounds', map);
+
+          var input = /** @type {HTMLInputElement} */(
+            document.getElementById('pac-input'));
+          var autocomplete = new google.maps.places.Autocomplete(input);
+          autocomplete.bindTo('bounds', map);
+
+          // Try W3C Geolocation (Preferred)
+          if(navigator.geolocation) {
+            browserSupportFlag = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+              initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+              map.setCenter(initialLocation);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              }, function() {
+              handleNoGeolocation(browserSupportFlag);
+            });
+          }
+          // Browser doesn't support Geolocation
+          else {
+            browserSupportFlag = false;
+            handleNoGeolocation(browserSupportFlag);
+          }
+
+          function handleNoGeolocation(errorFlag) {
+            if (errorFlag == true) {
+              alert("Geolocation service failed.");
+              initialLocation = toronto;
+            } else {
+              alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+              initialLocation = toronto;
+            }
+            map.setCenter(initialLocation);
+            $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+            $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+          }
+
+
+
+          google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
+
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
+
+          google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
+            var place = dialogAutocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
+
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
+
+          google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
+            var place = dialogAutocomplete2.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
+
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
+
+          //Associate the styled map with the MapTypeId and set it to display.
+          map.mapTypes.set('map_style', styledMap);
+          map.setMapTypeId('map_style');
+
+          google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
+
+          function addMarkers() {
+              {% if contributors %}
+                var json = "{{ contributors }}";
+                var objJson = JSON.parse(JSON.stringify(json));
+                objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+                for (var i = 0; i < objJson.length; i++) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
+                        map: map,
+                        icon: "{% static 'img/fist.png' %}"
+                    });
+                }
+              {% endif %}
+          }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+    <script>
+          function loginUser() {
+              FB.login(
+                  function(response) {
+                      checkLoginState(); //This is a call to a different function...
+                  },
+                {scope:'user_likes, offline_access, publish_actions'}
+              );
+          }
+
+          function ensureLogin() {
+              FB.getLoginStatus(function(response) {
+{#                statusChangeCallback(response);#}
+                  console.log(response);
+                  if (response.status != 'connected') {
+                      $('#myModal').modal('hide');
+                      FB.login(
+                              function(response) {
+                                  checkLoginState();
+                                  popupAfterLogin(response);
+                              },
+                              {scope:'user_likes, offline_access, publish_actions'}
+                      );
+                  }
+              });
+          }
+
+          function logoutUser() {
+              FB.logout(function(response) {
+                // user is now logged out
+                $('.dropdown').css('display', 'none !important');
+                location.reload();
+              });
+          }
+
+          function popupAfterLogin(response) {
+              if (response.status=='connected') {
+                  $('#myModal').modal('show');
+              } else {
+                  $('#myModal').modal('hide');
+              }
+          }
+
+          function shareWithFacebook() {
+              FB.ui({
+                method: 'feed',
+                name: 'Stand for Humanity',
+                link: 'http://fbrell.com/',
+                picture: 'http://fbrell.com/f8.jpg',
+                caption: 'Make a Difference',
+                description: 'Support the cause and join hundreds of others to take a stand for humanity. ' +
+                        'We\'re creating a movement.'
+              }, function(response){
+                  if (response && !response.error_code) {
+                      postToMap(FB.getAuthResponse().userID);
+                  }
+              });
+          }
+
+          function postToMap(fbID) {
+            $.post("/postToMap/",
+                {
+                   facebookId:fbID,
+                   lat: $('input[name="map-coordinates-lat"]').val(),
+                   lng: $('input[name="map-coordinates-lng"]').val(),
+                   csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
+                },
+                function(data, success) {
+                    location.reload();
+                });
+          }
+
+          // This is called with the results from from FB.getLoginStatus().
+          function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+              // Logged into your app and Facebook.
+              testAPI();
+            } else if (response.status === 'not_authorized') {
+              // The person is logged into Facebook, but not your app.
+            } else {
+              // The person is not logged into Facebook, so we're not sure if
+              // they are logged into this app or not.
+            }
+          }
+
+          // This function is called when someone finishes with the Login
+          // Button.  See the onlogin handler attached to it in the sample
+          // code below.
+          function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+            });
+          }
+
+          window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1442162709382134',
+            cookie     : true,  // enable cookies to allow the server to access
+                                // the session
+            xfbml      : true,  // parse social plugins on this page
+            version    : 'v2.0' // use version 2.0
+          });
+
+          // Now that we've initialized the JavaScript SDK, we call
+          // FB.getLoginStatus().  This function gets the state of the
+          // person visiting this page and can return one of three states to
+          // the callback you provide.  They can be:
+          //
+          // 1. Logged into your app ('connected')
+          // 2. Logged into Facebook, but not your app ('not_authorized')
+          // 3. Not logged into Facebook and can't tell if they are logged into
+          //    your app or not.
+          //
+          // These three cases are handled in the callback function.
+
+          FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+          });
+
+          };
+
+          // Load the SDK asynchronously
+          (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+          // Here we run a very simple test of the Graph API after login is
+          // successful.  See statusChangeCallback() for when this call is made.
+          function testAPI() {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function(response) {
+              console.log('Successful login for: ' + response.name);
+              $('input[name="fb-id"]').val(FB.getAuthResponse().userID);
+              $('#login-with-facebook').css('display', 'none');
+              $('.dropdown').css('display', 'block !important');
+              $('#facebook-image').append("<span class='caret' style='margin-right: 5px;'></span> " +
+                    "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='30' style='border-radius: 8px;'></img>");
+
+            });
+          }
+    </script>
+
+    <script>
+        function initializeConfig() {
+            $('.dropdown').css('display', 'none !important');
+        }
+    </script>
+</head>
+<style>
+    body, html {
+        background-color: whitesmoke;
+    }
+
+    .navbar .container {
+        width: 1020px !important;
+    }
+
+    #login-with-facebook {
+        color: white;
+    }
+
+    a#facebook-image.dropdown-toggle {
+        padding: 10px 15px !important;
+    }
+
+    .jumbotron {
+        margin-bottom: 0px;
+        max-width: 1020px;
+        margin: 0 auto;
+        padding: 48px 0 20px 0 !important;
+
+    }
+
+    .button-container {
+        padding: 0px 30px;
+        width: 322px;
+        margin: 0 auto;
+    }
+
+    #map-canvas {
+        height: 450px;
+        width: 100%;
+        max-width: 1030px;
+        margin: 0 auto;
+        position: relative;
+        box-shadow: 5px 5px 5px #888888;
+    }
+
+    #autocomplete-container {
+        width: 82%;
+        margin: 0 auto;
+        min-width: 937px;
+        max-width: 1024px;
+    }
+
+    #pac-input-container {
+        position: relative;
+        right: -45px;
+    }
+
+    #pac-input {
+        position: absolute;
+        z-index: 50;
+        background-color: #fff;
+        border-radius: 3px;
+        margin-top: 10px;
+        padding: 3px 11px 1px 8px;
+        width: 250px;
+        font-size: 13px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+    }
+
+    #pac-input:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 10px;  /* Regular padding-left + 1. */
+        width: 251px;
+    }
+
+    .set-location {
+        display: none;
+    }
+
+    .pac-container {
+        z-index: 9999 !important;
+    }
+
+    #dialog-input, #dialog-input2 {
+        width: 250px;
+    }
+
+    .proceed-container {
+        width: 100%;
+    }
+
+    #featured-img {
+        -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+        /* box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25); */
+    }
+
+    .footer {
+        width: 100%;
+        height: 60px;
+        background-color: #1d2325;
+        margin-top: 20px;
+    }
+
+    #gtom-button {
+        font-weight: 100;
+        letter-spacing: 1px;
+    }
+
+</style>
+<body onload="initializeConfig();">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #1d2325 !important; background-image: none !important;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img id="iconImg" src={% static 'img/standforhumanity.png' %} width="300" /></a>
+            </div>
+            <div class="collapse navbar-collapse" style="float: right;">
+                <ul class="nav navbar-nav">
+                    <li><a href="#map">Map</a></li>
+                    <li><a href="#the-cause">The Cause</a></li>
+                    <li><a href="#getting-involved">Get Involved</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li id="login-with-facebook">
+                        <a class="tab-link" href="#" onClick="loginUser(); return false;">Login</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="facebook-image"  class="dropdown-toggle" data-toggle="dropdown"> </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" onclick="logoutUser(); return false;">Logout</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: #001429; color: whitesmoke;">
+        <div class="container">
+            <h1 style="font-size: 34px; text-align: center; padding: 20px 0; font-weight: 200; font-family: Helvetica;">What if you and your friends could make a difference?</h1>
+            <div style="text-align: center;">
+                <h4 style="font-size: 19px; font-weight: 100; text-rendering: optimizelegibility;">Support the cause and join hundreds of others to take a stand for humanity.</h4>
+                <h4 style="font-size: 19px; font-weight: 100; text-rendering: optimizelegibility">Join the movement. Make your mark.</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: #30557c; padding: 30px 0px 30px 0px !important">
+        <div class="container">
+            <!-- Button trigger modal -->
+            <div class="button-container">
+                <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();" data-toggle="modal" data-target="#myModal">Get on the Map</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">There are 2 ways to get on the map!</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            1. Donate to the Cause!
+                            <br />
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#donateModal1">Donate</button>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            2. Spread the Word!
+                            <br />
+                            <button id="share-fb-button" type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#shareModal1">Post to FB</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="donateModal1" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <div class="dialog-input-container">
+                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                            </div>
+                            <br />
+                            <button type="button" class="btn btn-primary proceed-button" data-dismiss="modal" data-toggle="modal" data-target="#donateModal2">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="donateModal2" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel2" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <form action="/donate/" method="POST">
+                                {% csrf_token %}
+                                <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
+                                <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
+                                <input id="fb-id" name="fb-id" type="hidden" value="">
+                                <br/>
+                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
+                                <br/>
+                                <input type="radio" name="amount" value="500">5.00<br/>
+                                <input type="radio" name="amount" value="1000" checked>10.00<br/>
+                                <input type="radio" name="amount" value="2500" checked>25.00<br/>
+                                <input type="radio" name="amount" value="5000" checked>50.00<br/>
+                                <input type="radio" name="amount" id="otherAmount" value="" checked>Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
+                                <button id="customButton" class="btn btn-primary">Donate to the Cause</button>
+
+                                <script>
+                                   $('#customButton').click(function(){
+                                     var token = function(res){
+                                       var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                       $('form').append($input).submit();
+                                     };
+
+                                     StripeCheckout.open({
+                                       key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+                                       address:     false,
+                                       amount:      $('input[name="amount"]:checked').val(),
+                                       currency:    'cad',
+                                       name:        'Joes Pistachios',
+                                       description: 'A bag of Pistachios',
+                                       panelLabel:  'Checkout',
+                                       token:       token
+                                     });
+
+                                     return false;
+                                   });
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="shareModal1" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Share with Facebook</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <div class="dialog-input-container">
+                                <input id="dialog-input2" class="controls" type="text" placeholder="Enter a location">
+                            </div>
+                            <br />
+                            <button id="donate-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="map">
+        <div id="autocomplete-container">
+            <div id="pac-input-container">
+                <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+            </div>
+        </div>
+        <div id="map-canvas">
+        </div>
+    </div>
+
+    <div class="container" style=" max-width: 1020px; margin-top: 5px;">
+      <!-- Example row of columns -->
+      <div class="row">
+          <div class="col-md-12" style="background-color: #001429; color: whitesmoke;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">Featured Cause</h2>
+              <h4>&nbsp;&nbsp;#FreePalestine</h4>
+          </div>
+          <div id="featured-img" style="width:1020px; height:300px; overflow:hidden; margin: 0;">
+            <img src="http://i.huffpost.com/gen/1930806/thumbs/o-PALESTINE-PROTEST-LONDON-facebook.jpg" >
+          </div>
+          <div class="col-md-12" style="background-color: white;margin-top: 3px;">
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p>Explain what's happening in Palestine and the current state.</p>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-md-12" style="background-color: #001429; color: white;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">Other Ways You Can Help</h2>
+          </div>
+          <div id="featured-img" style="width:1020px; height:300px; overflow:hidden; margin: 0;">
+            <img src="http://i.huffpost.com/gen/1930806/thumbs/o-PALESTINE-PROTEST-LONDON-facebook.jpg" >
+          </div>
+          <div class="col-md-12" style="background-color: whitesmoke;margin-top: 3px;">
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          </div>
+      </div>
+
+      <div class="row" style="background-color: #B5C8DA; color: #001429;">
+          <div class="col-md-12" style="background-color: #001429; color: white;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">What is Stand For Humanity?</h2>
+          </div>
+          <div id="featured-img" style="width:1020px; height:300px; overflow:hidden; margin: 0;">
+            <img src="http://i.huffpost.com/gen/1930806/thumbs/o-PALESTINE-PROTEST-LONDON-facebook.jpg" >
+          </div>
+          <div class="col-md-12" style="background-color: whitesmoke;margin-top: 3px;">
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-content" style="max-width: 1020px; margin:0 auto; padding-top: 10px; text-align: right;">
+        <p class="text-muted">&copy; Copyright 2014</p>
+      </div>
+    </div>
+
+</body>
+</html>
