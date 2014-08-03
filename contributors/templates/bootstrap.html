@@ -204,7 +204,7 @@
                 for (var i = 0; i < objJson.length; i++) {
                     var contentString = "<table>" +
                         "<tr>" +
-{#                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v2.0/" + objJson[i].fb_id + "/picture?"+FB.getAuthResponse().accessToken+"' /></td>" +#}
+                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + objJson[i].fb_id + "/picture' /></td>" +
                         "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ objJson[i].name +"</h5><p style='font-size:10px'>Contributed "+ objJson[i].datestamp +"</td>" +
                         "</tr>" +
                         "</table>";
@@ -378,7 +378,7 @@
               $('#login-with-facebook').css('display', 'none');
               $('.dropdown').css('display', 'block !important');
               $('#facebook-image').append("<span class='caret' style='margin-right: 5px;'></span> " +
-                    "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='30' style='border-radius: 8px;'></img>");
+                    "<img src='https://graph.facebook.com/v1.0/"+FB.getAuthResponse().userID+"/picture' width='30' style='border-radius: 8px;'></img>");
 
             });
           }
