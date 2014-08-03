@@ -10,7 +10,7 @@
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407100923599" ignored="false" />
     <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405799729746" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
-    <file path="/bootstrap.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407101056418" ignored="false" />
+    <file path="/bootstrap.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407103225825" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
       <file leaf-file-name="bootstrap.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/bootstrap.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="207" column="85" selection-start="9154" selection-end="9154" vertical-scroll-proportion="0.5769231">
+            <state line="268" column="34" selection-start="11373" selection-end="11373" vertical-scroll-proportion="0.30550623">
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -72,10 +72,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="213" column="11" selection-start="8541" selection-end="9180" vertical-scroll-proportion="-8.24">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contributors/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="93" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0">
+            <state line="27" column="16" selection-start="745" selection-end="745" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -125,9 +134,9 @@
         <option value="$PROJECT_DIR$/helpforhumanity/static/js/paypal-button.min.js" />
         <option value="$PROJECT_DIR$/helpforhumanity/settings.py" />
         <option value="$PROJECT_DIR$/helpforhumanity/urls.py" />
-        <option value="$PROJECT_DIR$/contributors/templates/index.html" />
         <option value="$PROJECT_DIR$/helpforhumanity/static/css/main.css" />
         <option value="$PROJECT_DIR$/contributors/models.py" />
+        <option value="$PROJECT_DIR$/contributors/templates/index.html" />
         <option value="$PROJECT_DIR$/contributors/views.py" />
         <option value="$PROJECT_DIR$/contributors/templates/bootstrap.html" />
       </list>
@@ -456,7 +465,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20259319" sideWeight="0.81498474" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18501529" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18501529" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25283632" sideWeight="0.43425077" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -596,11 +605,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="466" column="9" selection-start="18800" selection-end="18800" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helpforhumanity/static/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="96" column="14" selection-start="1479" selection-end="1479" vertical-scroll-proportion="0.0">
@@ -624,16 +628,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="93" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0">
+        <state line="27" column="16" selection-start="745" selection-end="745" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="213" column="11" selection-start="8541" selection-end="9180" vertical-scroll-proportion="-8.24">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/bootstrap.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="207" column="85" selection-start="9154" selection-end="9154" vertical-scroll-proportion="0.5769231">
+        <state line="268" column="34" selection-start="11373" selection-end="11373" vertical-scroll-proportion="0.30550623">
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />

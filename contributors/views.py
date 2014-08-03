@@ -16,18 +16,11 @@ def index(request):
     lat = []
     lng =[]
     fb_id = []
-    name = []
 
     for contributor in contributors:
-        request_url = GRAPH_API_BASE_URL+"v2.0/"+contributor.facebook_id.encode('utf8')+"?access_token="+request.POST.get('fbAccessToken', False)
-        response = urllib2.urlopen(request_url)
-        response_data = response.read()
-        data = json.loads(response_data)
-
         lat.append(contributor.lat.encode('utf8'))
         lng.append(contributor.lng.encode('utf8'))
         fb_id.append(contributor.facebook_id.encode('utf8'))
-        name.append(data['first_name'] + " " + data['last_name'])
 
 
     arrayOfContributors = []
@@ -36,7 +29,6 @@ def index(request):
             "lat" : lat[i],
             "lng" : lng[i],
             "fb_id" : fb_id[i],
-            "name" : name[i]
         }
         arrayOfContributors.append(dict)
 

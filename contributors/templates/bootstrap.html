@@ -204,7 +204,7 @@
                 for (var i = 0; i < objJson.length; i++) {
                     var contentString = "<table>" +
                         "<tr>" +
-                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v2.0/" + objJson[i].fb_id + "/picture?"+FB.getAuthResponse().accessToken+"' /></td>" +
+{#                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v2.0/" + objJson[i].fb_id + "/picture?"+FB.getAuthResponse().accessToken+"' /></td>" +#}
                         "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ objJson[i].name +"</h5><p style='font-size:10px'>Contributed "+ objJson[i].datestamp +"</td>" +
                         "</tr>" +
                         "</table>";
@@ -242,10 +242,8 @@
 
           function ensureLogin() {
               FB.getLoginStatus(function(response) {
-{#                statusChangeCallback(response);#}
                   console.log(response);
                   if (response.status != 'connected') {
-                      $('#myModal').modal('hide');
                       FB.login(
                               function(response) {
                                   checkLoginState();
@@ -253,6 +251,8 @@
                               },
                               {scope:'user_likes, offline_access, publish_actions'}
                       );
+                  } else {
+                      popupAfterLogin(response);
                   }
               });
           }
@@ -266,6 +266,7 @@
           }
 
           function popupAfterLogin(response) {
+              jQuery.noConflict();
               if (response.status=='connected') {
                   $('#myModal').modal('show');
               } else {
@@ -553,7 +554,7 @@
         <div class="container">
             <!-- Button trigger modal -->
             <div class="button-container">
-                <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();" data-toggle="modal" data-target="#myModal">Get on the Map</button>
+                <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();" data-toggle="modal" data-target="myModal">Get on the Map</button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -735,7 +736,7 @@
                       <td style="vertical-align: top;">
                           <div >
                               <p><i><strong>100% of funds raised for #StandForPalestine go directly to Islamic Relief</strong></i></p>
-                              <p>Islamic Relief has been responding to emergencies for three decades, providing a lifeline for vulnerable communities affected by disaster and poverty. We continue to increase the work we do to protect those living in high-risk areas, with a focus on innovative disaster-risk reduction and climate-change adaptation.</p>
+                              <p>'Islamic Relief has been responding to emergencies for three decades, providing a lifeline for vulnerable communities affected by disaster and poverty. We continue to increase the work we do to protect those living in high-risk areas, with a focus on innovative disaster-risk reduction and climate-change adaptation.'</p>
                           </div>
                       </td>
                   </tr>
