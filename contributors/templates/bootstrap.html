@@ -1,12 +1,12 @@
 <html>
 <head>
+    {% load staticfiles %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Stand For Humanity</title>
+    <title>Stand for Humanity</title>
+    <link rel="icon" type="image/png" href="{% static 'img/fist_red.png' %}">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {% load staticfiles %}
 
     <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
 
@@ -334,7 +334,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',
+            appId      : '1442162709382134',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -393,6 +393,7 @@
 <style>
     body, html {
         background-color: whitesmoke;
+        margin:0 auto;
     }
 
     .navbar .container {
@@ -679,7 +680,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Share with Facebook</h4>
+                            <h4 class="modal-title" id="myModalLabel">Share with Facebook!</h4>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
                             <h5>Specify your location so others can see where you're supporting the cause from.</h5>

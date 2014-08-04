@@ -1,192 +1,236 @@
-<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Stand For Humanity</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stand for Humanity</title>
+    <link rel="icon" type="image/png" href="{% static 'img/fist_red.png' %}">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {% load staticfiles %}
+    <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
 
-        <!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-        <link rel="stylesheet" href={% static 'css/main.css' %}>
+    <!-- STRIPE API -->
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
 
-{#        <script src={% static 'js/jquery.transit.min.js' %}></script>#}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&libraries=places&sensor=false&v=3.exp"></script>
 
-        <script src="https://checkout.stripe.com/checkout.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+    <script>
+        function initialize() {
+          // Create an array of styles.
+          var styles = [
+            {
+              stylers: [
+                { "gamma": 0.62 },
+                { "visibility": "simplified" },
+                { "lightness": -71 },
+                { "saturation": -6 },
+                { "hue": "#1d2325" }
+              ]
+            }
+          ];
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&v=3.exp"></script>
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+          // Create a new StyledMapType object, passing it the array of styles,
+          // as well as the name to be displayed on the map type control.
+          var styledMap = new google.maps.StyledMapType(styles,
+            {name: "Styled Map"});
 
-        <script>
-            function initialize() {
-              // Create an array of styles.
-              var styles = [
-                {
-                  stylers: [
-                    { "gamma": 0.69 },
-                    { "visibility": "simplified" },
-                    { "lightness": -66 },
-                    { "saturation": -6 },
-                    { "hue": "#00bbff" }
-                  ]
-                }
-              ];
+          // Create a map object, and include the MapTypeId to add
+          // to the map type control.
+          var mapOptions = {
+            zoom: 3,
+            mapTypeControl: false,
+            panControl: false
+          };
 
-              // Create a new StyledMapType object, passing it the array of styles,
-              // as well as the name to be displayed on the map type control.
-              var styledMap = new google.maps.StyledMapType(styles,
-                {name: "Styled Map"});
+          var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
 
-              // Create a map object, and include the MapTypeId to add
-              // to the map type control.
-              var mapOptions = {
-                zoom: 4,
-                mapTypeControl: false,
-                panControl: false
-              };
+          var dialogInput = (document.getElementById('dialog-input'));
+          var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
+          dialogAutocomplete.bindTo('bounds', map);
 
-              var map = new google.maps.Map(document.getElementById('map-canvas'),
-                mapOptions);
+          var dialogInput2 = (document.getElementById('dialog-input2'));
+          var dialogAutocomplete2 = new google.maps.places.Autocomplete(dialogInput2);
+          dialogAutocomplete2.bindTo('bounds', map);
 
-              var dialogInput = (document.getElementById('dialog-input'));
-              var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
-              dialogAutocomplete.bindTo('bounds', map);
+          var input = /** @type {HTMLInputElement} */(
+            document.getElementById('pac-input'));
+          var autocomplete = new google.maps.places.Autocomplete(input);
+          autocomplete.bindTo('bounds', map);
 
-              var input = /** @type {HTMLInputElement} */(
-                document.getElementById('pac-input'));
-              var autocomplete = new google.maps.places.Autocomplete(input);
-              autocomplete.bindTo('bounds', map);
+          // Try W3C Geolocation (Preferred)
+          if(navigator.geolocation) {
+            browserSupportFlag = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+              initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+              map.setCenter(initialLocation);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              }, function() {
+              handleNoGeolocation(browserSupportFlag);
+            });
+          }
+          // Browser doesn't support Geolocation
+          else {
+            browserSupportFlag = false;
+            handleNoGeolocation(browserSupportFlag);
+          }
 
-              // Try W3C Geolocation (Preferred)
-              if(navigator.geolocation) {
-                browserSupportFlag = true;
-                navigator.geolocation.getCurrentPosition(function(position) {
-                  initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-                  map.setCenter(initialLocation);
-                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-                  }, function() {
-                  handleNoGeolocation(browserSupportFlag);
-                });
-              }
-              // Browser doesn't support Geolocation
-              else {
-                browserSupportFlag = false;
-                handleNoGeolocation(browserSupportFlag);
-              }
-
-              function handleNoGeolocation(errorFlag) {
-                if (errorFlag == true) {
-                  alert("Geolocation service failed.");
-                  initialLocation = newyork;
-                } else {
-                  alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
-                  initialLocation = siberia;
-                }
-                map.setCenter(initialLocation);
-                $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              }
+          function handleNoGeolocation(errorFlag) {
+            if (errorFlag == true) {
+              alert("Geolocation service failed.");
+              initialLocation = toronto;
+            } else {
+              alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+              initialLocation = toronto;
+            }
+            map.setCenter(initialLocation);
+            $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+            $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+          }
 
 
 
-              google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                var place = autocomplete.getPlace();
-                if (!place.geometry) {
-                  return;
-                }
-
-                // If the place has a geometry, then present it on a map.
-                if (place.geometry.viewport) {
-                  map.fitBounds(place.geometry.viewport);
-                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-                  map.setZoom(4);
-                } else {
-                  map.setCenter(place.geometry.location);
-                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-                  map.setZoom(4);  // Why 17? Because it looks good.
-                }
-
-                var address = '';
-                if (place.address_components) {
-                  address = [
-                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                    (place.address_components[2] && place.address_components[2].short_name || '')
-                  ].join(' ');
-                }
-              });
-
-              google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
-                var place = dialogAutocomplete.getPlace();
-                if (!place.geometry) {
-                  return;
-                }
-
-                // If the place has a geometry, then present it on a map.
-                if (place.geometry.viewport) {
-                  map.fitBounds(place.geometry.viewport);
-                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-                  map.setZoom(4);
-                } else {
-                  map.setCenter(place.geometry.location);
-                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-                  map.setZoom(4);  // Why 17? Because it looks good.
-                }
-
-                var address = '';
-                if (place.address_components) {
-                  address = [
-                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                    (place.address_components[2] && place.address_components[2].short_name || '')
-                  ].join(' ');
-                }
-              });
-
-              //Associate the styled map with the MapTypeId and set it to display.
-              map.mapTypes.set('map_style', styledMap);
-              map.setMapTypeId('map_style');
-
-              google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
-
-              function addMarkers() {
-                  {% if contributors %}
-                    var json = "{{ contributors }}";
-                    var objJson = JSON.parse(JSON.stringify(json));
-                    objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
-                    for (var i = 0; i < objJson.length; i++) {
-                        var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
-                            map: map
-                        });
-                    }
-                  {% endif %}
-              }
+          google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
             }
 
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
 
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
 
-            google.maps.event.addDomListener(window, 'load', initialize);
+          google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
+            var place = dialogAutocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
 
-        </script>
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
 
-        <script>
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
+
+          google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
+            var place = dialogAutocomplete2.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
+
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+          });
+
+          //Associate the styled map with the MapTypeId and set it to display.
+          map.mapTypes.set('map_style', styledMap);
+          map.setMapTypeId('map_style');
+
+          google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
+
+          function addMarkers() {
+              {% if contributors %}
+                var infowindow = new google.maps.InfoWindow();
+                var json = "{{ contributors }}";
+                var objJson = JSON.parse(JSON.stringify(json));
+                objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+                for (var i = 0; i < objJson.length; i++) {
+                    var contentString = "<table>" +
+                        "<tr>" +
+                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + objJson[i].fb_id + "/picture' /></td>" +
+                        "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ objJson[i].name +"</h5><p style='font-size:10px'>Contributed "+ objJson[i].datestamp +"</td>" +
+                        "</tr>" +
+                        "</table>";
+
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/freepst_fist_icon.png' %}",
+                        info: contentString
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.setContent(this.info);
+                        infowindow.open(map, this);
+                    });
+                }
+              {% endif %}
+          }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+    <script>
           function loginUser() {
               FB.login(
                   function(response) {
@@ -216,13 +260,17 @@
           function logoutUser() {
               FB.logout(function(response) {
                 // user is now logged out
+                $('.dropdown').css('display', 'none !important');
                 location.reload();
               });
           }
 
           function popupAfterLogin(response) {
+              jQuery.noConflict();
               if (response.status=='connected') {
-                  strtBlackout();
+                  $('#myModal').modal('show');
+              } else {
+                  $('#myModal').modal('hide');
               }
           }
 
@@ -230,18 +278,32 @@
               FB.ui({
                 method: 'feed',
                 name: 'Stand for Humanity',
-                link: 'http://fbrell.com/',
-                picture: 'http://fbrell.com/f8.jpg',
-                caption: 'Make a Difference',
+                link: 'http://standforhumanity.herokuapp.com/bootstrap/',
+                picture: 'http://i.imgur.com/3RFW3uY.jpg',
+                caption: '#StandForPalestine - Make a Difference',
                 description: 'Support the cause and join hundreds of others to take a stand for humanity. ' +
                         'We\'re creating a movement.'
               }, function(response){
                   if (response && !response.error_code) {
-                      endBlackout();
-                      postToMap(FB.getAuthResponse().userID);
+                      postToMap(FB.getAuthResponse().userID, FB.getAuthResponse().accessToken);
                   }
               });
           }
+
+          function postToMap(fbID, fbAccessToken) {
+            $.post("/postToMap/",
+                {
+                   facebookId:fbID,
+                   fbAccessToken:fbAccessToken,
+                   lat: $('input[name="map-coordinates-lat"]').val(),
+                   lng: $('input[name="map-coordinates-lng"]').val(),
+                   csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
+                },
+                function(data, success) {
+                    location.reload();
+                });
+          }
+
           // This is called with the results from from FB.getLoginStatus().
           function statusChangeCallback(response) {
             console.log('statusChangeCallback');
@@ -272,7 +334,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437376213194117',
+            appId      : '1437375943194144',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -312,282 +374,433 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
               console.log('Successful login for: ' + response.name);
-              $('input[name="fb-id"]').val(FB.getAuthResponse().userID);
+              $('input[name="fb-access-token"]').val(FB.getAuthResponse().accessToken);
               $('#login-with-facebook').css('display', 'none');
-              $('#facebook-image').append("<a class='facebook-img' href='#' onclick='dropdownOptions();'>" +
-                      "<img src='https://graph.facebook.com/v2.0/"+FB.getAuthResponse().userID+"/picture' width='35' style='border-radius: 15px;'></img>" +
-                      "</a>");
+              $('.dropdown').css('display', 'block !important');
+              $('#facebook-image').append("<span class='caret' style='margin-right: 5px;'></span> " +
+                    "<img src='https://graph.facebook.com/v1.0/"+FB.getAuthResponse().userID+"/picture' width='30' style='border-radius: 8px;'></img>");
 
             });
           }
-        </script>
+    </script>
 
-        <script>
-            function dropdownOptions() {
-                var dropdown = $('.dropdown');
-                if (dropdown.css('display') !== 'none') {
-                    dropdown.css('display', 'none');
-                } else {
-                    dropdown.css('display', 'block');
-                }
-            }
+    <script>
+        function initializeConfig() {
+            $('.dropdown').css('display', 'none !important');
+        }
+    </script>
 
-            function selectShareWithFacebook() {
-                $('.option-share').css('display', 'none');
-                $('.option-donate').css('display', 'none');
-{#                $('.donate').css('display', 'none');#}
-                $('.post-to-fb').css('display', 'block');
-            }
-
-            function selectMakeADonation() {
-                $('.option-donate').css('display', 'none');
-                $('.option-share').css('display', 'none');
-                $('.donate').css('display', 'block');
-            }
-
-            function postToMap(fbID) {
-                $.post("/postToMap/",
-                    {
-                       facebookId:fbID,
-                       lat: $('input[name="map-coordinates-lat"]').val(),
-                       lng: $('input[name="map-coordinates-lng"]').val(),
-                       csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
-                    },
-                    function(data, success) {
-                        location.reload();
-                    });
-            }
-
-            function testPost() {
-                $.post("/ipn/",
-                    {
-                       lat: $('input[name="map-coordinates-lat"]').val(),
-                       lng: $('input[name="map-coordinates-lng"]').val(),
-{#                       csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()#}
-                    },
-                    function(data, success) {
-                        location.reload();
-                    });
-            }
-        </script>
-
-
-        <script type="text/javascript">
-            //This is the function that closes the pop-up
-            function endBlackout(){
-                $(".blackout").css("display", "none");
-{#                $(".blackout").transition({ opacity: 0 });#}
-                $(".msgbox").css("display", "none");
-{#                $(".msgbox").transition({ opacity: 0 });#}
-                $('.option-share').css('display', 'block');
-                $('.post-to-fb').css('display', 'none');
-                $('.option-donate').css('display', 'block');
-                $('.donate').css('display', 'none');
-            }
-
-            //This is the function that starts the pop-up
-            function strtBlackout(){
-                $(".msgbox").css("display", "block");
-{#                $(".msgbox").transition({ opacity: 1 });#}
-                $(".blackout").css("display", "block");
-{#                $(".blackout").transition({ opacity: 1 });#}
-                $('.option-share').css('display', 'block');
-                $('.post-to-fb').css('display', 'none');
-                $('.option-donate').css('display', 'block');
-                $('.donate').css('display', 'none');
-            }
-
-            //Sets the buttons to trigger the blackout on clicks
-            $(document).ready(function(){
-{#                $("#gtom-button").click(strtBlackout); // open if btn is pressed#}
-                $(".blackout").click(endBlackout); // close if click outside of popup
-                $(".closeBox").click(endBlackout); // close if close btn clicked
-
-                $("input#otherInput").keyup(function(){
-                  $("input#otherAmount").val($(this).val() + "00");
-                });
+    <script>
+        $(document).ready(function(){
+            $('a').click(function(){
+                $('html, body').animate({
+                    scrollTop: $( $.attr(this, 'href') ).offset().top - 50
+                }, 500);
+                return false;
             });
-        </script>
+        });
+    </script>
+</head>
+<style>
+    body, html {
+        background-color: whitesmoke;
+        margin:0 auto;
+    }
 
-    </head>
-    <style>
+    .navbar .container {
+        width: 1020px !important;
+    }
 
-        .dropdown {
-            width: 75px;
-            padding-top: 10px;
-            z-index: 100;
-            position: absolute;
-            display: none;
-        }
+    #login-with-facebook {
+        color: white;
+    }
 
-        .dropdown ul,li {
-            list-style-type: none;
-            list-style-position: inside;
-            padding: 5px 0 5px 0;
-            font-size: 13px;
-            background: lightgray;
-            color: black;
-            font-weight: 300;
-        }
+    a#facebook-image.dropdown-toggle {
+        padding: 10px 15px !important;
+    }
 
-        .dropdown-list a:hover {
-            background-color: #30bdff;
-        }
+    .dropdown-menu {
+        background-color: #1d2325;
+    }
 
-        #autocomplete-container {
-            width: 82%;
-            margin: 0 auto;
-            min-width: 937px;
-            max-width: 1024px;
+    .dropdown-menu li a {
+        color: #777 !important;
+    }
 
-        }
+    .jumbotron {
+        margin-bottom: 0px;
+        max-width: 1020px;
+        margin: 0 auto;
+        padding: 48px 0 20px 0 !important;
 
-        #pac-input {
-            position: absolute;
-            z-index: 50;
-            background-color: #fff;
-            border-radius: 3px;
-            margin-top: 10px;
-            padding: 3px 11px 1px 8px;
-            width: 250px;
-{#            font-family: Roboto;#}
-            font-size: 13px;
-            font-weight: 300;
-            text-overflow: ellipsis;
-        }
+    }
 
-        #pac-input:focus {
-            border-color: #4d90fe;
-            margin-left: -1px;
-            padding-left: 10px;  /* Regular padding-left + 1. */
-            width: 251px;
-        }
+    .button-container {
+        padding: 0px 30px;
+        width: 322px;
+        margin: 0 auto;
+    }
 
-        .set-location {
-            display: none;
-        }
-    </style>
-    <body>
-        <div class="header-container" >
-            <div id="header" >
-                <div id="table-container">
-                    <table style="width: 100%;" id="header-table">
-                        <tr>
-                            <td>
-                               <div style="float:left;">
-                                   <a href="#"><img id="iconImg" src={% static 'img/standforhumanity.png' %} width="300" /></a>
-                               </div>
-                            </td>
-                            <div style="float:right;">
-                            <td class="header-tab">
-                                <a class="tab-link" href="#map">Map</a>
-                            </td>
-                            <td class="header-tab">
-                                <a class="tab-link" href="#thecause">The Cause</a>
-                            </td>
-                            <td class="header-tab">
-                                <a class="tab-link" href="#about">About</a>
-                            </td>
-                            <td class="header-tab">
-                                <a class="tab-link" href="#theimpact">The Impact</a>
-                            </td>
-                            <td width="75" class="header-tab">
-                                <div id="login-with-facebook">
-                                    <a class="tab-link" href="#" onClick="loginUser(); return false;">Login</a>
-                                </div>
-                                <div id="facebook-image"></div>
-                                <div class="dropdown">
-                                    <ul class="dropdown-list">
-                                        <a href="#" onclick="logoutUser(); return false;"><li>Logout</li></a>
-                                    </ul>
-                                </div>
-                            </td>
+    #map-canvas {
+        height: 450px;
+        width: 100%;
+        max-width: 1030px;
+        margin: 0 auto;
+        position: relative;
+        box-shadow: 5px 5px 5px #888888;
+    }
+
+    #autocomplete-container {
+        width: 82%;
+        margin: 0 auto;
+        min-width: 937px;
+        max-width: 1024px;
+    }
+
+    #pac-input-container {
+        position: relative;
+        right: -45px;
+    }
+
+    #pac-input {
+        position: absolute;
+        z-index: 50;
+        background-color: #fff;
+        border-radius: 3px;
+        margin-top: 10px;
+        padding: 3px 11px 1px 8px;
+        width: 250px;
+        font-size: 13px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+    }
+
+    #pac-input:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 10px;  /* Regular padding-left + 1. */
+        width: 251px;
+    }
+
+    .set-location {
+        display: none;
+    }
+
+    .pac-container {
+        z-index: 9999 !important;
+    }
+
+    #dialog-input, #dialog-input2 {
+        width: 250px;
+    }
+
+    .proceed-container {
+        width: 100%;
+    }
+
+    #featured-img {
+        -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+        /* box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25); */
+    }
+
+    .footer {
+        width: 100%;
+        height: 60px;
+        background-color: #1d2325;
+        margin-top: 20px;
+    }
+
+    #gtom-button {
+        font-weight: 100;
+        letter-spacing: 1px;
+    }
+
+    #dialog-input, #dialog-input2 {
+        padding: 3px 11px 1px 8px;
+    }
+
+</style>
+<body onload="initializeConfig();">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #1d2325 !important; background-image: none !important;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img id="iconImg" src="{% static 'img/standforhumanity.png' %}" width="250" /></a>
+            </div>
+            <div class="collapse navbar-collapse" style="float: right;">
+                <ul class="nav navbar-nav">
+                    <li><a href="#map">Map</a></li>
+                    <li><a href="#the-cause">The Cause</a></li>
+                    <li><a href="#getting-involved">Get Involved</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li id="login-with-facebook">
+                        <a class="tab-link" href="#" onClick="loginUser(); return false;">Login</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="facebook-image"  class="dropdown-toggle" data-toggle="dropdown"> </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" onclick="logoutUser(); return false;">Logout</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: #001429; color: whitesmoke;">
+        <div class="container">
+            <h1 style="font-size: 34px; text-align: center; padding: 20px 0; font-weight: 200; font-family: Helvetica;">What if you and your friends could make a difference?</h1>
+            <div style="text-align: center;">
+                <h4 style="font-size: 19px; font-weight: 100; text-rendering: optimizelegibility;">Support the cause and join hundreds of others to take a stand for humanity.</h4>
+                <h4 style="font-size: 19px; font-weight: 100; text-rendering: optimizelegibility">Join the movement. Make your mark.</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: #30557c; padding: 30px 0px 30px 0px !important">
+        <div class="container">
+            <!-- Button trigger modal -->
+            <div class="button-container">
+                <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();" data-toggle="modal" data-target="myModal">Get on the Map</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">There are 2 ways to get on the map!</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <h5>1. Donate to the Cause!</h5>
+                            <p style="font-size: 14px;">100% of all raised funds are donated to Palestine through Islamic Relief.</p>
+                            <div style="text-align: center;">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#donateModal1">Donate</button>
                             </div>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="main-container">
-            <div class="tagline-container">
-                <h1 class="tagline">What if you and your friends could make difference?</h1>
-                <h4 class="subtag1">Support the cause and join hundreds of others to take a stand for humanity.</h4>
-                <h4 class="subtag2">We're creating a movement.</h4>
-            </div>
-{#            <div class="instructions-container">#}
-{#                <h3>There are two ways to get on the map</h3>#}
-{#            </div>#}
-            <div class="getonthemap-container">
-                <div class="button-container">
-                    <button id="gtom-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="ensureLogin();">Get on the Map</button>
-                    <div class="blackout"></div>
-                    <div class="msgbox">
-                        <div class="closeBox">Close</div>
-                        <br />
-                        <div class="option-share">
-                            <button id="share-fb-button" type="button" class="btn btn-primary btn-lg" onclick="selectShareWithFacebook();">Post to FB</button>
                         </div>
-                        <div class="post-to-fb">
-                            <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
-                            {% csrf_token %}
-                            <button id="share-fb-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <h5>2. Spread the Word!</h5>
+                            <p style="font-size: 14px;">Tell your friends on Facebook about Stand for Humanity and the #StandForPalestine cause so they can join the movement too.</p>
+                            <div style="text-align: center;">
+                                <button style="margin:0 auto;" id="share-fb-button" type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#shareModal1">Post to FB</button>
+                            </div>
                         </div>
-                        <br/>
-
-                        <div class="option-donate">
-                            <button id="donate-button" type="button" class="btn btn-primary btn-lg" onclick="selectMakeADonation();">Make a Donation</button>
-                        </div>
-                        <div class="donate">
-                            <form action="/donate/" method="POST">
-                                <button id="customButton" class="btn btn-primary">Donate</button>
-                                {% csrf_token %}
-                                <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
-                                <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
-                                <input id="fb-id" name="fb-id" type="hidden" value="">
-                                <br/>
-                                <input id="dialog-input" class="controls" type="text" placeholder="Enter a location">
-                                <br/>
-                                <input type="radio" name="amount" value="500">5.00<br/>
-                                <input type="radio" name="amount" value="1000" checked>10.00<br/>
-                                <input type="radio" name="amount" value="2500" checked>25.00<br/>
-                                <input type="radio" name="amount" value="5000" checked>50.00<br/>
-                                <input type="radio" name="amount" id="otherAmount" value="" checked>Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
-
-                                <script>
-                                   $('#customButton').click(function(){
-                                       var token = function(res){
-                                       var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                       $('form').append($input).submit();
-                                     };
-
-                                     StripeCheckout.open({
-                                       key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
-                                       address:     false,
-                                       amount:      $('input[name="amount"]:checked').val(),
-                                       currency:    'cad',
-                                       name:        'Joes Pistachios',
-                                       description: 'A bag of Pistachios',
-                                       panelLabel:  'Checkout',
-                                       token:       token
-                                     });
-
-                                     return false;
-                                   });
-                                </script>
-                            </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="map-container">
-                <div id="autocomplete-container">
-                    <div id="pac-input-container">
-                        <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+            <div class="modal fade" id="donateModal1" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause!</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <h5>Specify your location so others can see where you're supporting the cause from.</h5>
+                            <p style="font-size: 14px;">Leave the field blank if you want us to use your current location.</p>
+                            <table style="margin:0 auto;">
+                                <tr>
+                                    <td>
+                                        <div class="dialog-input-container">
+                                            <input style="height: 34px; width: 240px; font-size: 14px;" id="dialog-input" class="controls" type="text" placeholder="Current Location">
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <button type="button" class="btn btn-primary proceed-button" data-dismiss="modal" data-toggle="modal" data-target="#donateModal2">Proceed</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
                     </div>
                 </div>
-                <div id="map-canvas"></div>
+            </div>
+            <div class="modal fade" id="donateModal2" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel2" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause!</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <p style="font-size:14px;">Please select one of the options to indicate the amount you wish to donate to the cause, or input your own amount using the Other option. A symbol of your contribution will become visible on the map after making your donation to the cause.</p>
+                            <table>
+                                <tr>
+                                    <td width="210"><p style="font-size:12px; position: relative; bottom: 20px;">A tax receipt will be sent to the email address you specify in the following step.</p></td>
+                                    <td style="padding: 0 10px;">
+                                        <form action="/donate/" method="POST" style="font-size: 16px; font-weight: 300;">
+                                            {% csrf_token %}
+                                            <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
+                                            <input style="margin-top: 10px;" id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
+                                            <input style="margin-top: 10px;" id="fb-access-token" name="fb-access-token" type="hidden" value="">
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="500">&nbsp;$5<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="1000">&nbsp;$10<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="2500" checked>&nbsp;$25<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="5000">&nbsp;$50<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" type="text">.00<br/>
+                                            <button style="margin-top: 10px;" id="customButton" class="btn btn-primary">Donate to the Cause</button>
+
+                                            <script>
+                                               $('#customButton').click(function(){
+                                                 var token = function(res){
+                                                   var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                   $('form').append($input).submit();
+                                                 };
+
+                                                 StripeCheckout.open({
+                                                   key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+                                                   address:     false,
+                                                   amount:      $('input[name="amount"]:checked').val(),
+                                                   currency:    'cad',
+                                                   name:        'Stand for Humanity',
+                                                   description: '#StandForPalestine',
+                                                   image: "{% static 'img/islamic-relief.png' %}",
+                                                   panelLabel:  'Checkout',
+                                                   token:       token
+                                                 });
+
+                                                 return false;
+                                               });
+                                            </script>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="shareModal1" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Share with Facebook!</h4>
+                        </div>
+                        <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
+                            <h5>Specify your location so others can see where you're supporting the cause from.</h5>
+                            <p style="font-size: 14px;">Leave the field blank if you want us to use your current location.</p>
+                            <table style="margin:0 auto;">
+                                <tr>
+                                    <td>
+                                        <div class="dialog-input-container">
+                                            <input style="height: 34px; width: 240px; font-size: 14px;" id="dialog-input2" class="controls" type="text" placeholder="Current Location">
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <button id="donate-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Spread the Word</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="map">
+        <div id="autocomplete-container">
+            <div id="pac-input-container">
+                <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
             </div>
         </div>
-    </body>
+        <div id="map-canvas">
+        </div>
+    </div>
+
+    <div class="container" style=" max-width: 1020px; margin-top: 5px;">
+      <!-- Example row of columns -->
+      <div class="row" id="the-cause">
+          <div class="col-md-12" style="background-color: #001429; color: whitesmoke;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">Featured Cause</h2>
+              <h4 style="padding-left:10px; letter-spacing: 1px;">#StandForPalestine</h4>
+          </div>
+          <div id="featured-img" style="width:1020px; height:350px; overflow:hidden; margin: 0;">
+            <img src="{% static 'img/david-goliath.jpg' %}" >
+          </div>
+          <div class="col-md-12" style="background-color: white; margin-top: 3px; padding-top: 5px;">
+              <p>Israel's continued military occupation and confiscation of privately owned land in the West Bank, and control over Gaza, are extremely oppressive, with Palestinians having minimal control over their lives. Over 10,000 Palestinian men, women, and children are held in Israeli prisons. Few of them have had a legitimate trial; physical abuse and torture are frequent. Palestinian borders (even internal ones) are controlled by Israeli forces. Periodically men, women, and children are strip searched; people are beaten; women in labor are prevented from reaching hospitals (at times resulting in death); food and medicine are blocked from entering Gaza, producing an escalating humanitarian crisis. Israeli forces invade almost daily, injuring, kidnapping, and sometimes killing inhabitants.</p>
+              <p>One cannot describe the situation in Gaza in any other term except 'genocide’. Israel has been pounding the Gaza Strip for almost four weeks, which killed at least 1,458 Palestinians and injured more than 8,300 others, an alarming portion of which are innocent, women, children, and youth, according to the Palestinian health ministry.</p>
+              <p>Leadership in Canada, the United States, and U.K. have shown an astounding level of support for the state of Israel throughout the relentless violence and disproportionate aggression against the citizens of Palestine in an effort to create a Jewish-only state as part of the Zionist movement. Largely due to special-interest lobbying, U.S. taxpayers give Israel an average of $8 million per day, and since its creation have given more U.S. funds to Israel than to any other nation. As citizens around the world are learning about how Israel is using tax dollars, donations, and profits from trade, many are calling for an end to these expenditures.</p>
+              <p>Support the cause to put an end to the world’s support for Israel and the destruction of Palestinian lives, families, and homes. Take a stand for humanity and put an end to the desecration of innocent lives. Join the movement.</p>
+              <p><i>100% of funds raised for this cause are donated directly to Gaza through Islamic Relief</i></p>
+          </div>
+      </div>
+
+      <div class="row" id="getting-involved">
+          <div class="col-md-12" style="background-color: #001429; color: white;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">Other Ways You Can Help</h2>
+          </div>
+          <div id="featured-img" style="width:1020px; height:300px; overflow:hidden; margin: 0;">
+            <img src="http://i.huffpost.com/gen/1930806/thumbs/o-PALESTINE-PROTEST-LONDON-facebook.jpg" >
+          </div>
+          <div class="col-md-12" style="background-color: white; margin-top: 3px; padding-top: 5px;">
+              <div style="max-width: 800px;">
+                  <h4>1. Boycott Israel - <a href="http://www.inminds.com/boycott-israel.php" target="_blank" style="font-size: 12px; font-weight: 400;">More on the Boycott</a></h4>
+                  <p style="padding-left: 10px;">People of good conscience have chosen to boycott israeli products and companies supporting the zionist entity.</p>
+                  <h4>2. Support the work of other NGOs active on the question of Palestine</h4>
+                  <p style="padding-left: 10px;">To find a list of some other organisations working to improving the situation of Palestinian civilians please <a href="http://pchrgaza.org/portal/en/index.php?option=com_content&view=article&id=3052&Itemid=198" target="_blank">click here</a>.</p>
+                  <h4>3. Write to your elected (or unelected) representatives asking them to take action</h4>
+                  <p style="padding-left: 10px;">Send a letter to your politicians to express your concern for the situation in Palestine, particularly in Gaza where citizens are currently under attack. As more people write to their governments these governments will understand that the question of Palestine is no longer one they can ignore – at home or abroad. Let your voice be heard.</p>
+                  <h4>4. Take to the streets, or the theatres, or anywhere you can</h4>
+                  <p style="padding-left: 10px;">More action is required to let people in authority know the strength of feeling about this question and a very visible way of doing this is by taking to the streets in protest at the conspiracy of silence practised by governments on the question of Palestine.   However street events don’t always have to be sombre or serious events – use your imagination and organise carnivals and festivals which educate your community about Palestinian food, dress, music, poetry and other aspects of the culture.  Such events can be an opportunity to explain to people that this culture is being suffocated and eradicated by the belligerent Israeli occupation.</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="row" id="about">
+          <div class="col-md-12" style="background-color: #001429; color: white;">
+              <h2 style=" margin-top: 10px !important; font-weight: 100;">What is Stand For Humanity?</h2>
+          </div>
+          <div id="featured-img" style="width:1020px; overflow:hidden; margin: 0;">
+            <img src="http://tuum-est.com/_image/earth-from-space-horizon-view-nasa.jpg" >
+          </div>
+          <div class="col-md-12" style="background-color: white; margin-top: 3px; padding-top: 5px;">
+              <p>Stand for Humanity is a social movement dedicated to supporting the lives of innocent people in times of need. For each respective cause, each person on the map represents an important piece of the puzzle to taking a stand for humanity by either donating to the cause or raising awareness to it. All funds raised by Stand for Humanity are donated directly to charity funds supporting the featured cause.</p>
+          </div>
+          <div class="col-md-12" style="background-color: white; padding-top: 5px;">
+              <table style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857143;">
+                  <tr>
+                      <td style="padding: 0 10px 10px 0;">
+                          <a href="http://www.islamic-relief.org/" target="_blank"><img src="{% static 'img/islamic-relief.png' %}" /></a>
+                      </td>
+                      <td style="vertical-align: top;">
+                          <div >
+                              <p><i><strong>100% of funds raised for #StandForPalestine go directly to Islamic Relief</strong></i></p>
+                              <p>'Islamic Relief has been responding to emergencies for three decades, providing a lifeline for vulnerable communities affected by disaster and poverty. We continue to increase the work we do to protect those living in high-risk areas, with a focus on innovative disaster-risk reduction and climate-change adaptation.'</p>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-content" style="max-width: 1020px; margin:0 auto; padding-top: 10px; text-align: right;">
+        <p class="text-muted">&copy; Copyright 2014</p>
+      </div>
+    </div>
+
+</body>
 </html>

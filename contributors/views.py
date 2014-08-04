@@ -16,11 +16,15 @@ def index(request):
     lat = []
     lng =[]
     fb_id = []
+    name = []
+    datestamp = []
 
     for contributor in contributors:
         lat.append(contributor.lat.encode('utf8'))
         lng.append(contributor.lng.encode('utf8'))
         fb_id.append(contributor.facebook_id.encode('utf8'))
+        name.append(contributor.name.encode('utf8'))
+        datestamp.append(str(contributor.contribution_date.strftime('%d %B %Y %I:%M%p')) + " GMT")
 
 
     arrayOfContributors = []
@@ -29,14 +33,16 @@ def index(request):
             "lat" : lat[i],
             "lng" : lng[i],
             "fb_id" : fb_id[i],
+            "name" : name[i],
+            "datestamp" : datestamp[i]
         }
         arrayOfContributors.append(dict)
 
     dump = json.dumps(arrayOfContributors)
     data = {"contributors" : dump}
 
-    return render(request, 'index.html', data)
 
+    return render(request, 'index.html', data)
 def bootstrap(request):
     contributors = Contributor.objects.all().exclude(facebook_id=0)
     lat = []
