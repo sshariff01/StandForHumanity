@@ -8,7 +8,7 @@
     <file path="/models.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407138697595" ignored="false" />
     <file path="/urls.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1406669089233" ignored="false" />
     <file path="/views.py" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407178253692" ignored="false" />
-    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407185882949" ignored="false" />
+    <file path="/index.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407186043402" ignored="false" />
     <file path="/main.css" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1405366539888" ignored="false" />
     <file path="/bootstrap.html" changelist="ffbbb6cd-a1b2-45d7-ba17-69d44eb5964b" time="1407130449529" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -38,7 +38,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="415" column="65" selection-start="17188" selection-end="17188" vertical-scroll-proportion="0.10051546">
+            <state line="497" column="38" selection-start="20169" selection-end="20169" vertical-scroll-proportion="0.5798969">
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#form#0;n#td#1;n#tr#0;n#table#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -653,7 +653,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="415" column="65" selection-start="17188" selection-end="17188" vertical-scroll-proportion="0.10051546">
+        <state line="497" column="38" selection-start="20169" selection-end="20169" vertical-scroll-proportion="0.5798969">
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#form#0;n#td#1;n#tr#0;n#table#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
