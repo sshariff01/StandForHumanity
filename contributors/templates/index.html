@@ -413,7 +413,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',  //'1442162709382134',
+            appId      : '1442162709382134',  //'1437375943194144',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -440,11 +440,10 @@
 
           // Load the SDK asynchronously
           (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/en_US/sdk.js";
           }(document, 'script', 'facebook-jssdk'));
 
           // Here we run a very simple test of the Graph API after login is
@@ -600,6 +599,10 @@
         padding: 3px 11px 1px 8px;
     }
 
+    .uiGrid .vTop {
+        vertical-align: middle !important;
+    }
+
 </style>
 <body onload="initializeConfig();">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #1d2325 !important; background-image: none !important;">
@@ -611,7 +614,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img id="iconImg" src="{% static 'img/standforhumanity.png' %}" width="250" /></a>
+                <table>
+                    <tr>
+                        <td><a class="navbar-brand" href="#"><img id="iconImg" src="{% static 'img/standforhumanity.png' %}" width="250" /></a></td>
+                        <td>
+                            <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/stand.4.humanity.now/&amp;
+                                layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;
+                                font=verdana&amp;colorscheme=light" allowtransparency="true" style="border:
+                                medium none; overflow: hidden; width: 90px; height: 21px;" frameborder="0"
+                                scrolling="no">
+                            </iframe>
+                        </td>
+                    </tr>
+                </table>
+
             </div>
             <div class="collapse navbar-collapse" style="float: right;">
                 <ul class="nav navbar-nav">
