@@ -401,7 +401,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144', //'1437375943194144',
+            appId      : '1442162709382134', //'1437375943194144',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -718,29 +718,37 @@
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="2500" checked>&nbsp;$25<br/>
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="5000">&nbsp;$50<br/>
                                             <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" type="text">.00<br/>
+
                                             <button style="margin-top: 10px;" id="customButton" class="btn btn-primary">Donate to the Cause</button>
 
                                             <script>
-                                               $('#customButton').click(function(){
-                                                 var token = function(res){
-                                                   var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                   $('form').append($input).submit();
-                                                 };
+                                              var handler = StripeCheckout.configure({
+                                                key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+                                                image: "{% static 'img/islamic-relief.png' %}",
+                                                token: function(token) {
+                                                  var $amount = $('<input type=hidden name=amount />').val($('input[name="amount"]:checked').val());
+                                                  var $currency = $('<input type=hidden name=currency />').val('cad');
+                                                  var $input = $('<input type=hidden name=stripeToken />').val(token.id);
 
-                                                 StripeCheckout.open({
-                                                   key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
-                                                   address:     false,
-                                                   amount:      $('input[name="amount"]:checked').val(),
-                                                   currency:    'cad',
-                                                   name:        'Stand for Humanity',
-                                                   description: '#StandForPalestine',
-                                                   image: "{% static 'img/islamic-relief.png' %}",
-                                                   panelLabel:  'Checkout',
-                                                   token:       token
-                                                 });
+                                                  $('form').append($amount);
+                                                  $('form').append($currency);
+                                                  $('form').append($input).submit();
 
-                                                 return false;
-                                               });
+                                                  // Use the token to create the charge with a server-side script.
+                                                  // You can access the token ID with `token.id`
+                                                }
+                                              });
+
+                                              document.getElementById('customButton').addEventListener('click', function(e) {
+                                                // Open Checkout with further options
+                                                handler.open({
+                                                  name:        'Stand for Humanity',
+                                                  description: '#StandForPalestine',
+                                                  amount:      $('input[name="amount"]:checked').val(),
+                                                  currency:    'cad'
+                                                });
+                                                e.preventDefault();
+                                              });
                                             </script>
                                         </form>
                                     </td>

@@ -78,39 +78,37 @@ def donate(request):
     # Get the credit card details submitted by the form
     token = request.POST['stripeToken']
 
-
-    if request.POST.get('fb-access-token', False):
-        request_url = GRAPH_API_BASE_URL+"v2.0/me?access_token="+request.POST.get('fb-access-token', False)
-        response = urllib2.urlopen(request_url)
-        response_data = response.read()
-        data = json.loads(response_data)
-
-    if Contributor.objects.filter(facebook_id=data['id']).exists():
-        contributor = Contributor.objects.get(facebook_id=data['id'])
-        # This Contributor has contributed before!
-        contributor.score = 3
-    else:
-        contributor = Contributor.objects.create(contribution_date=timezone.now())
-        contributor.facebook_id = data['id']
-        contributor.name = data['first_name'] + " " + data['last_name']
-        contributor.score = 1
-
-    if request.POST.get('map-coordinates-lat', False):
-        contributor.lat = request.POST.get('map-coordinates-lat', False).encode('utf8')
-    if request.POST.get('map-coordinates-lng', False):
-        contributor.lng = request.POST.get('map-coordinates-lng', False).encode('utf8')
-
-    contributor.save()
-
     # Create the charge on Stripe's servers - this will charge the user's card
     try:
-      charge = stripe.Charge.create(
-          amount=1000, # amount in cents, again
-          currency="usd",
-          card=token,
-          # description="payinguser@example.com",
-      )
+        charge = stripe.Charge.create(
+            amount=request.POST['amount'], # amount in cents, again
+            currency=request.POST['currency'],
+            card=token,
+            # description="payinguser@example.com",
+        )
 
+        if request.POST.get('fb-access-token', False):
+            request_url = GRAPH_API_BASE_URL+"v2.0/me?access_token="+request.POST.get('fb-access-token', False)
+            response = urllib2.urlopen(request_url)
+            response_data = response.read()
+            data = json.loads(response_data)
+
+        if Contributor.objects.filter(facebook_id=data['id']).exists():
+            contributor = Contributor.objects.get(facebook_id=data['id'])
+            # This Contributor has contributed before!
+            contributor.score = 3
+        else:
+            contributor = Contributor.objects.create(contribution_date=timezone.now())
+            contributor.facebook_id = data['id']
+            contributor.name = data['first_name'] + " " + data['last_name']
+            contributor.score = 1
+
+        if request.POST.get('map-coordinates-lat', False):
+            contributor.lat = request.POST.get('map-coordinates-lat', False).encode('utf8')
+        if request.POST.get('map-coordinates-lng', False):
+            contributor.lng = request.POST.get('map-coordinates-lng', False).encode('utf8')
+
+        contributor.save()
 
     except stripe.CardError, e:
       # The card has been declined
