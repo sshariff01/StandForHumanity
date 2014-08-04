@@ -29,16 +29,83 @@
         function initialize() {
           // Create an array of styles.
           var styles = [
-            {
-              stylers: [
-                { "gamma": 0.62 },
-                { "visibility": "simplified" },
-                { "lightness": -71 },
-                { "saturation": -6 },
-                { "hue": "#1d2325" }
-              ]
-            }
-          ];
+              {
+                "featureType": "administrative",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "road",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "landscape",
+                "elementType": "geometry",
+                "stylers": [
+                  { "gamma": 0.82 },
+                  { "visibility": "on" },
+                  { "hue": "#00a1ff" },
+                  { "lightness": -84 }
+                ]
+              },{
+                "featureType": "road",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "on" },
+                  { "lightness": 15 },
+                  { "saturation": -10 },
+                  { "hue": "#00e5ff" }
+                ]
+              },{
+                "featureType": "administrative.country",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.province",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.neighborhood",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.land_parcel",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "water",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "water",
+                "stylers": [
+                  { "hue": "#0077ff" },
+                  { "saturation": -53 },
+                  { "lightness": -60 },
+                  { "gamma": 1.11 }
+                ]
+              },{
+              }
+            ];
 
           // Create a new StyledMapType object, passing it the array of styles,
           // as well as the name to be displayed on the map type control.
@@ -213,7 +280,7 @@
                         position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
                         map: map,
                         animation: google.maps.Animation.DROP,
-                        icon: "{% static 'img/freepst_fist_icon.png' %}",
+                        icon: "{% static 'img/free_palestine_gray.png' %}",
                         info: contentString
                     });
 
