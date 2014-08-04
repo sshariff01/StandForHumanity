@@ -268,21 +268,33 @@
                 var json = "{{ contributors }}";
                 var objJson = JSON.parse(JSON.stringify(json));
                 objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+                var contributor;
                 for (var i = 0; i < objJson.length; i++) {
+                    contributor = objJson[i];
                     var contentString = "<table>" +
                         "<tr>" +
-                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + objJson[i].fb_id + "/picture' /></td>" +
-                        "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ objJson[i].name +"</h5><p style='font-size:10px'>Contributed "+ objJson[i].datestamp +"</td>" +
+                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + contributor.fb_id + "/picture' /></td>" +
+                        "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Contributed "+ contributor.datestamp +"</td>" +
                         "</tr>" +
                         "</table>";
 
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(objJson[i].lat, objJson[i].lng),
-                        map: map,
-                        animation: google.maps.Animation.DROP,
-                        icon: "{% static 'img/free_palestine_gray.png' %}",
-                        info: contentString
-                    });
+                    if (contributor.score < 3) {
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                            map: map,
+                            animation: google.maps.Animation.DROP,
+                            icon: "{% static 'img/free_palestine_gray.png' %}",
+                            info: contentString
+                        });
+                    } else {
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                            map: map,
+                            animation: google.maps.Animation.DROP,
+                            icon: "{% static 'img/free_palestine_green.png' %}",
+                            info: contentString
+                        });
+                    }
 
                     google.maps.event.addListener(marker, 'click', function() {
                         infowindow.setContent(this.info);
@@ -401,7 +413,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144', //'1442162709382134',
+            appId      : '1442162709382134', //'1437375943194144',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
