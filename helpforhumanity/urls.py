@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', contributors.views.index, name='index'),
-    url(r'^bootstrap/', contributors.views.bootstrap, name='bootstrap'),
     url(r'^postToMap/', contributors.views.postToMap, name='postToMap'),
     url(r'^donate/', contributors.views.donate, name='donate'),
 
