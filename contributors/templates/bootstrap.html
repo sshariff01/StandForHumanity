@@ -334,7 +334,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',
+            appId      : '1442162709382134',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -504,6 +504,10 @@
         letter-spacing: 1px;
     }
 
+    #dialog-input, #dialog-input2 {
+        padding: 3px 11px 1px 8px;
+    }
+
 </style>
 <body onload="initializeConfig();">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #1d2325 !important; background-image: none !important;">
@@ -515,7 +519,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img id="iconImg" src={% static 'img/standforhumanity.png' %} width="300" /></a>
+                <a class="navbar-brand" href="#"><img id="iconImg" src="{% static 'img/standforhumanity.png' %}" width="300" /></a>
             </div>
             <div class="collapse navbar-collapse" style="float: right;">
                 <ul class="nav navbar-nav">
@@ -565,14 +569,18 @@
                             <h4 class="modal-title" id="myModalLabel">There are 2 ways to get on the map!</h4>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
-                            1. Donate to the Cause!
-                            <br />
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#donateModal1">Donate</button>
+                            <h5>1. Donate to the Cause!</h5>
+                            <p style="font-size: 14px;">100% of all raised funds are donated to Palestine through Islamic Relief.</p>
+                            <div style="text-align: center;">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#donateModal1">Donate</button>
+                            </div>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
-                            2. Spread the Word!
-                            <br />
-                            <button id="share-fb-button" type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#shareModal1">Post to FB</button>
+                            <h5>2. Spread the Word!</h5>
+                            <p style="font-size: 14px;">Tell your friends on Facebook about Stand for Humanity and the #StandForPalestine cause so they can join the movement too.</p>
+                            <div style="text-align: center;">
+                                <button style="margin:0 auto;" id="share-fb-button" type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#shareModal1">Post to FB</button>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -587,14 +595,24 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause</h4>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause!</h4>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
-                            <div class="dialog-input-container">
-                                <input id="dialog-input" class="controls" type="text" placeholder="Current location">
-                            </div>
-                            <br />
-                            <button type="button" class="btn btn-primary proceed-button" data-dismiss="modal" data-toggle="modal" data-target="#donateModal2">Proceed</button>
+                            <h5>Specify your location so others can see where you're supporting the cause from.</h5>
+                            <p style="font-size: 14px;">Leave the field blank if you want us to use your current location.</p>
+                            <table style="margin:0 auto;">
+                                <tr>
+                                    <td>
+                                        <div class="dialog-input-container">
+                                            <input style="height: 34px; width: 240px; font-size: 14px;" id="dialog-input" class="controls" type="text" placeholder="Current Location">
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <button type="button" class="btn btn-primary proceed-button" data-dismiss="modal" data-toggle="modal" data-target="#donateModal2">Proceed</button>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
                 </div>
@@ -604,43 +622,53 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause</h4>
+                            <h4 class="modal-title" id="myModalLabel">Donate to the Cause!</h4>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
-                            <form action="/donate/" method="POST">
-                                {% csrf_token %}
-                                <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
-                                <input id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
-                                <input id="fb-access-token" name="fb-access-token" type="hidden" value="">
-                                <input type="radio" name="amount" value="500">5.00<br/>
-                                <input type="radio" name="amount" value="1000" checked>10.00<br/>
-                                <input type="radio" name="amount" value="2500">25.00<br/>
-                                <input type="radio" name="amount" value="5000">50.00<br/>
-                                <input type="radio" name="amount" id="otherAmount" value="">Other: <input id="otherInput" name="otherInput" size="16" type="text"><br/>
-                                <button id="customButton" class="btn btn-primary">Donate to the Cause</button>
+                            <p style="font-size:14px;">Please select one of the options to indicate the amount you wish to donate to the cause, or input your own amount using the Other option. A symbol of your contribution will become visible on the map after making your donation to the cause.</p>
+                            <table>
+                                <tr>
+                                    <td width="210"><p style="font-size:12px; position: relative; bottom: 20px;">A tax receipt will be sent to the email address you specify in the following step.</p></td>
+                                    <td style="padding: 0 10px;">
+                                        <form action="/donate/" method="POST" style="font-size: 16px; font-weight: 300;">
+                                            {% csrf_token %}
+                                            <input id="map-coordinates-lat" name="map-coordinates-lat" type="hidden" value="">
+                                            <input style="margin-top: 10px;" id="map-coordinates-lat" name="map-coordinates-lng" type="hidden" value="">
+                                            <input style="margin-top: 10px;" id="fb-access-token" name="fb-access-token" type="hidden" value="">
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="500">&nbsp;$5<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="1000">&nbsp;$10<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="2500" checked>&nbsp;$25<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" value="5000">&nbsp;$50<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" type="text">.00<br/>
+                                            <button style="margin-top: 10px;" id="customButton" class="btn btn-primary">Donate to the Cause</button>
 
-                                <script>
-                                   $('#customButton').click(function(){
-                                     var token = function(res){
-                                       var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                       $('form').append($input).submit();
-                                     };
+                                            <script>
+                                               $('#customButton').click(function(){
+                                                 var token = function(res){
+                                                   var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                   $('form').append($input).submit();
+                                                 };
 
-                                     StripeCheckout.open({
-                                       key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
-                                       address:     false,
-                                       amount:      $('input[name="amount"]:checked').val(),
-                                       currency:    'cad',
-                                       name:        'Joes Pistachios',
-                                       description: 'A bag of Pistachios',
-                                       panelLabel:  'Checkout',
-                                       token:       token
-                                     });
+                                                 StripeCheckout.open({
+                                                   key:         'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+                                                   address:     false,
+                                                   amount:      $('input[name="amount"]:checked').val(),
+                                                   currency:    'cad',
+                                                   name:        'Stand for Humanity',
+                                                   description: '#StandForPalestine',
+                                                   image: "{% static 'img/islamic-relief.png' %}",
+                                                   panelLabel:  'Checkout',
+                                                   token:       token
+                                                 });
 
-                                     return false;
-                                   });
-                                </script>
-                            </form>
+                                                 return false;
+                                               });
+                                            </script>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
                 </div>
@@ -654,11 +682,21 @@
                             <h4 class="modal-title" id="myModalLabel">Share with Facebook</h4>
                         </div>
                         <div class="modal-body" style="border-bottom: 1px solid #e5e5e5;">
-                            <div class="dialog-input-container">
-                                <input id="dialog-input2" class="controls" type="text" placeholder="Current location">
-                            </div>
-                            <br />
-                            <button id="donate-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Make Your Mark</button>
+                            <h5>Specify your location so others can see where you're supporting the cause from.</h5>
+                            <p style="font-size: 14px;">Leave the field blank if you want us to use your current location.</p>
+                            <table style="margin:0 auto;">
+                                <tr>
+                                    <td>
+                                        <div class="dialog-input-container">
+                                            <input style="height: 34px; width: 240px; font-size: 14px;" id="dialog-input2" class="controls" type="text" placeholder="Current Location">
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <button id="donate-button" type="button" class="btn btn-primary" onclick="shareWithFacebook();">Spread the Word</button>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
                 </div>
