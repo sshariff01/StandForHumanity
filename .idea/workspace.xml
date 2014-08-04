@@ -38,7 +38,7 @@
       <file leaf-file-name="bootstrap.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/bootstrap.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="506" column="33" selection-start="18812" selection-end="18812" vertical-scroll-proportion="-0.42706132">
+            <state line="336" column="42" selection-start="14186" selection-end="14186" vertical-scroll-proportion="0.80972517">
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -689,7 +689,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/bootstrap.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="506" column="33" selection-start="18812" selection-end="18812" vertical-scroll-proportion="-0.42706132">
+        <state line="336" column="42" selection-start="14186" selection-end="14186" vertical-scroll-proportion="0.80972517">
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
