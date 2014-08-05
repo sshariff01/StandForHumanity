@@ -1,138 +1,140 @@
-body {
+body, html {
     background-color: whitesmoke;
-    background-size:cover;
-    background-attachment: fixed;
+    margin:0 auto;
 }
 
-.header-container {
-    min-height: 60px;
+.navbar .container {
+    width: 100%;
+    max-width: 1020px;
+}
+
+#login-with-facebook {
+    color: white;
+}
+
+a#facebook-image.dropdown-toggle {
+    padding: 10px 15px !important;
+}
+
+.dropdown-menu {
     background-color: #1d2325;
 }
 
-#header {
-    width: 82%;
-    min-width: 937px;
-    max-width: 1024px;
+.dropdown-menu li a {
+    color: #777 !important;
+}
+
+.jumbotron {
+    margin-bottom: 0px !important;
+    max-width: 1020px;
     margin: 0 auto;
-    padding: 15px;
-    z-index:99
-}
+    padding: 48px 0 20px 0 !important;
 
-.header-tab {
-    color: white;
-}
-
-#header-table a {
-    color: lightgray;
-    text-decoration: none;
-    width:100%;
-    height:100%;
-    display: block;
-    text-align: center;
-}
-
-#header-table a:hover {
-    color: white;
-}
-
-.main-container {
-    margin: 0 auto;
-    width: 80%;
-    min-width: 937px;
-    max-width: 1024px;
-    background: #ffffff;
-    border: 1px solid #CCC;
-    border-top: none;
-}
-
-.tagline-container {
-    display: inline-block;
-    width: 100%;
-    background: #0f1e2d;
-    margin: 0 auto;
-}
-
-.tagline {
-    margin: 0 auto;
-    text-align: center;
-    color: #e0eafd;
-    padding: 40px 0px 40px 0px;
-    font-weight: 400;
-}
-
-.subtag1 {
-    margin: 0 auto;
-    text-align: center;
-    color: #e0eafd;
-    font-weight: 200;
-    font-size: 19px;
-}
-
-.subtag2 {
-    margin: 0 auto;
-    text-align: center;
-    color: #e0eafd;
-    font-weight: 200;
-    font-size: 19px;
-    padding: 10px 0px 40px 0px;
-}
-
-#map-canvas {
-    height: 500px;
-    width: 102%;
-    margin: 0 auto;
-    position: relative;
-    left: -1%;
-}
-
-#facebook-image {
-    text-align: center;
-}
-
-.getonthemap-container {
-    background: powderblue;
 }
 
 .button-container {
-    padding: 30px;
+    padding: 0px 30px;
     width: 322px;
     margin: 0 auto;
 }
 
-.button-container button {
-    font-family: 'Helvetica';
-    font-weight: 200;
+#map-canvas {
+    height: 450px;
+    width: 100%;
+    max-width: 1030px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 5px 5px 5px #888888;
 }
 
-.blackout {
-    background-color:#000;
-    opacity:.7;
-    filter:alpha(opacity=70);
-    height:100%;
-    width:100%;
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:100;
-    display:none;
-    cursor:pointer;
+#autocomplete-container {
+    width: 82%;
+    margin: 0 auto;
+    min-width: 937px;
+    max-width: 1024px;
 }
 
-.msgbox {
-    background-color:white;
-    color:#000;
-    width:30%;
-    /*height:30%;*/
-    position:fixed;
-    top:20%;
-    left:15%;
-    border-radius:20px;
-    padding:10px;
-    z-index:101;
-    display:none;
-    margin-left: 20%;
+#pac-input-container {
+    position: relative;
+    right: -45px;
 }
 
-.closeBox {
-    cursor:pointer;
+#pac-input {
+    position: absolute;
+    z-index: 50;
+    background-color: #fff;
+    border-radius: 3px;
+    margin-top: 10px;
+    padding: 3px 11px 1px 8px;
+    width: 250px;
+    font-size: 13px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+    margin-left: -1px;
+    padding-left: 10px;  /* Regular padding-left + 1. */
+    width: 251px;
+}
+
+.set-location {
+    display: none;
+}
+
+.pac-container {
+    z-index: 9999 !important;
+}
+
+#dialog-input, #dialog-input2 {
+    width: 250px;
+}
+
+.proceed-container {
+    width: 100%;
+}
+
+#featured-img {
+    -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25); */
+}
+
+.footer {
+    width: 100%;
+    height: 60px;
+    background-color: #1d2325;
+    margin-top: 20px;
+}
+
+#gtom-button {
+    font-weight: 100;
+    letter-spacing: 1px;
+}
+
+#dialog-input, #dialog-input2 {
+    padding: 3px 11px 1px 8px;
+}
+
+.uiGrid .vTop {
+    vertical-align: middle !important;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 2em;
+    right: 0px;
+    text-decoration: none;
+    color: #000000;
+    background-color: rgba(235, 235, 235, 0.80);
+    font-size: 12px;
+    padding: 1em;
+    display: none;
+}
+
+.back-to-top:hover {
+    background-color: rgba(135, 135, 135, 0.50);
+    text-decoration: none;
+    color: black;
 }
