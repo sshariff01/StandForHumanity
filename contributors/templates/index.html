@@ -42,6 +42,15 @@
                   { "visibility": "off" }
                 ]
               },{
+                "featureType": "road.arterial",
+                "elementType": "geometry",
+                "stylers": [
+                  { "gamma": 0.82 },
+                  { "visibility": "on" },
+                  { "hue": "#00a1ff" },
+                  { "lightness": -94 }
+                ]
+              },{
                 "featureType": "poi",
                 "elementType": "geometry",
                 "stylers": [
@@ -57,7 +66,7 @@
                   { "lightness": -84 }
                 ]
               },{
-                "featureType": "road",
+                "featureType": "road.highway",
                 "elementType": "geometry",
                 "stylers": [
                   { "visibility": "on" },
@@ -117,7 +126,8 @@
           var mapOptions = {
             zoom: 3,
             mapTypeControl: false,
-            panControl: false
+            panControl: false,
+            center: new google.maps.LatLng(43.70011, -79.416300)
           };
 
           var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -155,14 +165,14 @@
           }
 
           function handleNoGeolocation(errorFlag) {
-            if (errorFlag == true) {
-              alert("Geolocation service failed.");
-              initialLocation = toronto;
-            } else {
-              alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
-              initialLocation = toronto;
-            }
-            map.setCenter(initialLocation);
+{#            if (errorFlag == true) {#}
+{#              alert("Geolocation service failed.");#}
+{#              initialLocation = toronto;#}
+{#            } else {#}
+{#              alert("Your browser doesn't support geolocation. We've placed you in Siberia.");#}
+{#              initialLocation = toronto;#}
+{#            }#}
+{#            map.setCenter(initialLocation);#}
             $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
             $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
           }
