@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -28,9 +29,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&libraries=places&sensor=false&v=3.exp"></script>
 
     <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+
         function initialize() {
-          // Create an array of styles.
-          var styles = [
+            // Create an array of styles.
+            var styles = [
               {
                 "featureType": "administrative",
                 "elementType": "geometry",
@@ -118,38 +121,38 @@
               }
             ];
 
-          // Create a new StyledMapType object, passing it the array of styles,
-          // as well as the name to be displayed on the map type control.
-          var styledMap = new google.maps.StyledMapType(styles,
+            // Create a new StyledMapType object, passing it the array of styles,
+            // as well as the name to be displayed on the map type control.
+            var styledMap = new google.maps.StyledMapType(styles,
             {name: "Styled Map"});
 
-          // Create a map object, and include the MapTypeId to add
-          // to the map type control.
-          var mapOptions = {
+            // Create a map object, and include the MapTypeId to add
+            // to the map type control.
+            var mapOptions = {
             zoom: 3,
             mapTypeControl: false,
             panControl: false,
             center: new google.maps.LatLng(43.70011, -79.416300)
-          };
+            };
 
-          var map = new google.maps.Map(document.getElementById('map-canvas'),
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
 
-          var dialogInput = (document.getElementById('dialog-input'));
-          var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
-          dialogAutocomplete.bindTo('bounds', map);
+            var dialogInput = (document.getElementById('dialog-input'));
+            var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
+            dialogAutocomplete.bindTo('bounds', map);
 
-          var dialogInput2 = (document.getElementById('dialog-input2'));
-          var dialogAutocomplete2 = new google.maps.places.Autocomplete(dialogInput2);
-          dialogAutocomplete2.bindTo('bounds', map);
+            var dialogInput2 = (document.getElementById('dialog-input2'));
+            var dialogAutocomplete2 = new google.maps.places.Autocomplete(dialogInput2);
+            dialogAutocomplete2.bindTo('bounds', map);
 
-          var input = /** @type {HTMLInputElement} */(
+            var input = /** @type {HTMLInputElement} */(
             document.getElementById('pac-input'));
-          var autocomplete = new google.maps.places.Autocomplete(input);
-          autocomplete.bindTo('bounds', map);
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
 
-          // Try W3C Geolocation (Preferred)
-          if(navigator.geolocation) {
+            // Try W3C Geolocation (Preferred)
+            if(navigator.geolocation) {
             browserSupportFlag = true;
             navigator.geolocation.getCurrentPosition(function(position) {
               initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
@@ -159,29 +162,19 @@
               }, function() {
               handleNoGeolocation(browserSupportFlag);
             });
-          }
-          // Browser doesn't support Geolocation
-          else {
+            }
+            // Browser doesn't support Geolocation
+            else {
             browserSupportFlag = false;
             handleNoGeolocation(browserSupportFlag);
-          }
+            }
 
-          function handleNoGeolocation(errorFlag) {
-{#            if (errorFlag == true) {#}
-{#              alert("Geolocation service failed.");#}
-{#              initialLocation = toronto;#}
-{#            } else {#}
-{#              alert("Your browser doesn't support geolocation. We've placed you in Siberia.");#}
-{#              initialLocation = toronto;#}
-{#            }#}
-{#            map.setCenter(initialLocation);#}
+            function handleNoGeolocation(errorFlag) {
             $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
             $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-          }
+            }
 
-
-
-          google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
             if (!place.geometry) {
               return;
@@ -208,9 +201,9 @@
                 (place.address_components[2] && place.address_components[2].short_name || '')
               ].join(' ');
             }
-          });
+            });
 
-          google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
+            google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
             var place = dialogAutocomplete.getPlace();
             if (!place.geometry) {
               return;
@@ -237,9 +230,9 @@
                 (place.address_components[2] && place.address_components[2].short_name || '')
               ].join(' ');
             }
-          });
+            });
 
-          google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
+            google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
             var place = dialogAutocomplete2.getPlace();
             if (!place.geometry) {
               return;
@@ -266,59 +259,57 @@
                 (place.address_components[2] && place.address_components[2].short_name || '')
               ].join(' ');
             }
-          });
+            });
 
-          //Associate the styled map with the MapTypeId and set it to display.
-          map.mapTypes.set('map_style', styledMap);
-          map.setMapTypeId('map_style');
-
-          google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
-
-          function addMarkers() {
-              {% if contributors %}
-                var infowindow = new google.maps.InfoWindow();
-                var json = "{{ contributors }}";
-                var objJson = JSON.parse(JSON.stringify(json));
-                objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
-                var contributor;
-                for (var i = 0; i < objJson.length; i++) {
-                    contributor = objJson[i];
-                    var contentString = "<table>" +
-                        "<tr>" +
-                        "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + contributor.fb_id + "/picture' /></td>" +
-                        "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Contributed "+ contributor.datestamp +"</td>" +
-                        "</tr>" +
-                        "</table>";
-
-                    if (contributor.score < 3) {
-                        var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(contributor.lat, contributor.lng),
-                            map: map,
-                            animation: google.maps.Animation.DROP,
-                            icon: "{% static 'img/free_palestine_gray.png' %}",
-                            info: contentString
-                        });
-                    } else {
-                        var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(contributor.lat, contributor.lng),
-                            map: map,
-                            animation: google.maps.Animation.DROP,
-                            icon: "{% static 'img/free_palestine_green.png' %}",
-                            info: contentString
-                        });
-                    }
-
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infowindow.setContent(this.info);
-                        infowindow.open(map, this);
-                    });
-                }
-              {% endif %}
-          }
+            //Associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
         }
 
-        google.maps.event.addDomListener(window, 'load', initialize);
 
+        google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
+
+        function addMarkers() {
+          {% if contributors %}
+            var infowindow = new google.maps.InfoWindow();
+            var json = "{{ contributors }}";
+            var objJson = JSON.parse(JSON.stringify(json));
+            objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+            var contributor;
+            for (var i = 0; i < objJson.length; i++) {
+                contributor = objJson[i];
+                var contentString = "<table>" +
+                    "<tr>" +
+                    "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + contributor.fb_id + "/picture' /></td>" +
+                    "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Contributed "+ contributor.datestamp +"</td>" +
+                    "</tr>" +
+                    "</table>";
+
+                if (contributor.score < 3) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/free_palestine_gray.png' %}",
+                        info: contentString
+                    });
+                } else {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/free_palestine_green.png' %}",
+                        info: contentString
+                    });
+                }
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(this.info);
+                    infowindow.open(map, this);
+                });
+            }
+          {% endif %}
+    }
     </script>
 
     <script>
@@ -425,7 +416,7 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',  //'1442162709382134',
+            appId      : '1442162709382134',  //'1437375943194144',
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
