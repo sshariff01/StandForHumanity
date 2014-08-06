@@ -659,6 +659,7 @@
                                                 var handler = StripeCheckout.configure({
                                                     key: 'pk_test_4WyrqVW2A8o7KQHRjdKCsawK',
                                                     image: "{% static 'img/islamic-relief.png' %}",
+                                                    allowRememberMe: false,
                                                     token: function(token) {
                                                       var $amount = $('<input type=hidden name=amount />').val($('input[name="amount"]:checked').val());
                                                       var $currency = $('<input type=hidden name=currency />').val('cad');
