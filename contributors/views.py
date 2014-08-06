@@ -73,7 +73,7 @@ def postToMap(request):
 def donate(request):
     # Set your secret key: remember to change this to your live secret key in production
     # See your keys here https://dashboard.stripe.com/account
-    stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+    stripe.api_key = "sk_test_4Wyr9PufmlKtucQDuRqESk1I"
 
     # Get the credit card details submitted by the form
     token = request.POST['stripeToken']
@@ -107,6 +107,30 @@ def donate(request):
             contributor.lat = request.POST.get('map-coordinates-lat', False).encode('utf8')
         if request.POST.get('map-coordinates-lng', False):
             contributor.lng = request.POST.get('map-coordinates-lng', False).encode('utf8')
+
+        if charge['card']['address_city']:
+            contributor.address_city = charge['card']['address_city']
+
+        if charge['card']['address_country']:
+            contributor.address_country = charge['card']['address_country']
+
+        if charge['card']['address_line1']:
+            if charge['card']['address_line1_check'] == 'pass':
+                contributor.address_line1 = charge['card']['address_line1']
+            else:
+                contributor.address_line1 = 'error'
+
+        if charge['card']['address_line2']:
+            contributor.address_line2 = charge['card']['address_line2']
+
+        if charge['card']['address_state']:
+            contributor.address_state = charge['card']['address_state']
+
+        if charge['card']['address_zip']:
+            if charge['card']['address_zip_check']:
+                contributor.address_zip = charge['card']['address_zip']
+            else:
+                contributor.address_zip = 'error'
 
         contributor.save()
 

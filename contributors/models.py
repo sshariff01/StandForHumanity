@@ -8,5 +8,11 @@ class Contributor(models.Model):
     name = models.TextField(default=0)
     score = models.IntegerField(default=0)
 
+    address_city = models.TextField(default=0)
+    address_country = models.TextField(default=0)
+    address_line1 = models.TextField(default=0)
+    address_line2 = models.TextField(default=0)
+    address_zip = models.TextField(default=0)
+
     # def __unicode__(self):
     #     return self.contribution_date

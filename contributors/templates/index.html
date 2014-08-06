@@ -124,19 +124,19 @@
             // Create a new StyledMapType object, passing it the array of styles,
             // as well as the name to be displayed on the map type control.
             var styledMap = new google.maps.StyledMapType(styles,
-            {name: "Styled Map"});
+                {name: "Styled Map"});
 
             // Create a map object, and include the MapTypeId to add
             // to the map type control.
             var mapOptions = {
-            zoom: 3,
-            mapTypeControl: false,
-            panControl: false,
-            center: new google.maps.LatLng(43.70011, -79.416300)
+                zoom: 3,
+                mapTypeControl: false,
+                panControl: false,
+                center: new google.maps.LatLng(43.70011, -79.416300)
             };
 
             var map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+                mapOptions);
 
             var dialogInput = (document.getElementById('dialog-input'));
             var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
@@ -153,20 +153,20 @@
 
             // Try W3C Geolocation (Preferred)
             if(navigator.geolocation) {
-            browserSupportFlag = true;
-            navigator.geolocation.getCurrentPosition(function(position) {
-              initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-              map.setCenter(initialLocation);
-              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              }, function() {
-              handleNoGeolocation(browserSupportFlag);
-            });
+                browserSupportFlag = true;
+                navigator.geolocation.getCurrentPosition(function(position) {
+                  initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                  map.setCenter(initialLocation);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  }, function() {
+                    handleNoGeolocation(browserSupportFlag);
+                  });
             }
             // Browser doesn't support Geolocation
             else {
-            browserSupportFlag = false;
-            handleNoGeolocation(browserSupportFlag);
+                browserSupportFlag = false;
+                handleNoGeolocation(browserSupportFlag);
             }
 
             function handleNoGeolocation(errorFlag) {
@@ -204,72 +204,73 @@
             });
 
             google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
-            var place = dialogAutocomplete.getPlace();
-            if (!place.geometry) {
-              return;
-            }
+                var place = dialogAutocomplete.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
 
-            // If the place has a geometry, then present it on a map.
-            if (place.geometry.viewport) {
-              map.fitBounds(place.geometry.viewport);
-              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              map.setZoom(4);
-            } else {
-              map.setCenter(place.geometry.location);
-              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              map.setZoom(4);  // Why 17? Because it looks good.
-            }
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
 
-            var address = '';
-            if (place.address_components) {
-              address = [
-                (place.address_components[0] && place.address_components[0].short_name || ''),
-                (place.address_components[1] && place.address_components[1].short_name || ''),
-                (place.address_components[2] && place.address_components[2].short_name || '')
-              ].join(' ');
-            }
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
             });
 
             google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
-            var place = dialogAutocomplete2.getPlace();
-            if (!place.geometry) {
-              return;
-            }
+                var place = dialogAutocomplete2.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
 
-            // If the place has a geometry, then present it on a map.
-            if (place.geometry.viewport) {
-              map.fitBounds(place.geometry.viewport);
-              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              map.setZoom(4);
-            } else {
-              map.setCenter(place.geometry.location);
-              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
-              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
-              map.setZoom(4);  // Why 17? Because it looks good.
-            }
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
 
-            var address = '';
-            if (place.address_components) {
-              address = [
-                (place.address_components[0] && place.address_components[0].short_name || ''),
-                (place.address_components[1] && place.address_components[1].short_name || ''),
-                (place.address_components[2] && place.address_components[2].short_name || '')
-              ].join(' ');
-            }
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
             });
+
 
             //Associate the styled map with the MapTypeId and set it to display.
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
+
+            google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers(map));
+
         }
-
-
-        google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers);
-
-        function addMarkers() {
+;
+        function addMarkers(gMap) {
           {% if contributors %}
             var infowindow = new google.maps.InfoWindow();
             var json = "{{ contributors }}";
@@ -288,7 +289,7 @@
                 if (contributor.score < 3) {
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(contributor.lat, contributor.lng),
-                        map: map,
+                        map: gMap,
                         animation: google.maps.Animation.DROP,
                         icon: "{% static 'img/free_palestine_gray.png' %}",
                         info: contentString
@@ -296,7 +297,7 @@
                 } else {
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(contributor.lat, contributor.lng),
-                        map: map,
+                        map: gMap,
                         animation: google.maps.Animation.DROP,
                         icon: "{% static 'img/free_palestine_green.png' %}",
                         info: contentString
@@ -416,8 +417,8 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',  // Production Key,
-{#            appId      : '1442162709382134',  // Test Key,#}
+{#            appId      : '1437375943194144',  // Production Key,#}
+            appId      : '1442162709382134',  // Test Key,
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -447,7 +448,7 @@
               var js, fjs = d.getElementsByTagName(s)[0];
               if (d.getElementById(id)) return;
               js = d.createElement(s); js.id = id;
-              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1437375943194144&version=v2.0";
+              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1442162709382134&version=v2.0";
               fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
 
@@ -630,7 +631,14 @@
                             <p style="font-size:14px;">Please select one of the options to indicate the amount you wish to donate to the cause, or input your own amount using the Other option. A symbol of your contribution will become visible on the map after making your donation to the cause.</p>
                             <table>
                                 <tr>
-                                    <td width="210"><p style="font-size:12px; position: relative; bottom: 20px;">A tax receipt will be sent to the email address you specify in the following step.</p></td>
+                                    <td width="210">
+                                        <p style="font-size:12px; position: relative; bottom: 20px;">
+                                            Check the box below if you would like to receive a receipt for your donation. A tax receipt will be sent to the email address you specify in the following step.
+                                            <br><br>
+                                            <input type="checkbox" id="taxReceiptOption" name="taxReceiptOption" value="1"><strong> I want a donation receipt</strong>
+                                        </p>
+
+                                    </td>
                                     <td style="padding: 0 10px;">
                                         <form action="/donate/" method="POST" style="font-size: 16px; font-weight: 300;">
                                             {% csrf_token %}
@@ -643,36 +651,50 @@
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="5000">&nbsp;$50<br/>
                                             <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" type="text">.00<br/>
 
+
                                             <button style="margin-top: 10px;" id="customButton" class="btn btn-primary">Donate to the Cause</button>
 
                                             <script>
-                                              var handler = StripeCheckout.configure({
-                                                key: 'pk_test_4WyrqVW2A8o7KQHRjdKCsawK',
-                                                image: "{% static 'img/islamic-relief.png' %}",
-                                                token: function(token) {
-                                                  var $amount = $('<input type=hidden name=amount />').val($('input[name="amount"]:checked').val());
-                                                  var $currency = $('<input type=hidden name=currency />').val('cad');
-                                                  var $input = $('<input type=hidden name=stripeToken />').val(token.id);
+                                                var handler = StripeCheckout.configure({
+                                                    key: 'pk_test_4WyrqVW2A8o7KQHRjdKCsawK',
+                                                    image: "{% static 'img/islamic-relief.png' %}",
+                                                    token: function(token) {
+                                                      var $amount = $('<input type=hidden name=amount />').val($('input[name="amount"]:checked').val());
+                                                      var $currency = $('<input type=hidden name=currency />').val('cad');
+                                                      var $input = $('<input type=hidden name=stripeToken />').val(token.id);
 
-                                                  $('form').append($amount);
-                                                  $('form').append($currency);
-                                                  $('form').append($input).submit();
+                                                      $('form').append($amount);
+                                                      $('form').append($currency);
+                                                      $('form').append($input).submit();
 
-                                                  // Use the token to create the charge with a server-side script.
-                                                  // You can access the token ID with `token.id`
-                                                }
-                                              });
+                                                      // Use the token to create the charge with a server-side script.
+                                                      // You can access the token ID with `token.id`
+                                                    }
+                                                  });
 
-                                              document.getElementById('customButton').addEventListener('click', function(e) {
-                                                // Open Checkout with further options
-                                                handler.open({
-                                                  name:        'Stand for Humanity',
-                                                  description: '#StandForPalestine',
-                                                  amount:      $('input[name="amount"]:checked').val(),
-                                                  currency:    'cad'
+                                                  document.getElementById('customButton').addEventListener('click', function(e) {
+
+                                                      if (document.getElementById('taxReceiptOption').checked) {
+                                                            // Open Checkout with tax options
+                                                            handler.open({
+                                                              name:        'Stand for Humanity',
+                                                              description: '#StandForPalestine',
+                                                              amount:      $('input[name="amount"]:checked').val(),
+                                                              currency:    'cad',
+                                                              address:      true
+                                                            });
+                                                            e.preventDefault();
+                                                      } else {
+                                                            // Open Checkout without tax options
+                                                            handler.open({
+                                                              name:        'Stand for Humanity',
+                                                              description: '#StandForPalestine',
+                                                              amount:      $('input[name="amount"]:checked').val(),
+                                                              currency:    'cad'
+                                                            });
+                                                            e.preventDefault();
+                                                      }
                                                 });
-                                                e.preventDefault();
-                                              });
                                             </script>
                                         </form>
                                     </td>
