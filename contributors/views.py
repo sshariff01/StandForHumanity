@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from contributors.models import Contributor
+from contributors.models import Contributor, Donation_StandForPalestine
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 
@@ -23,7 +23,7 @@ def index(request):
         lng.append(contributor.lng.encode('utf8'))
         fb_id.append(contributor.facebook_id.encode('utf8'))
         name.append(contributor.name.encode('utf8'))
-        datestamp.append(str(contributor.contribution_date.strftime('%d %B %Y %I:%M%p')) + " GMT")
+        datestamp.append(str(contributor.last_contribution_date.strftime('%d %B %Y %I:%M%p')) + " GMT")
         score.append(contributor.score)
 
 
@@ -54,10 +54,11 @@ def postToMap(request):
 
     if Contributor.objects.filter(facebook_id=data['id']).exists():
         contributor = Contributor.objects.get(facebook_id=data['id'])
+        contributor.last_contribution_date=timezone.now()
         # This Contributor has contributed before!
         contributor.score = 3
     else:
-        contributor = Contributor.objects.create(contribution_date=timezone.now())
+        contributor = Contributor.objects.create(last_contribution_date=timezone.now())
         contributor.facebook_id = data['id']
         contributor.name = data['first_name'] + " " + data['last_name']
         contributor.score = 2
@@ -87,18 +88,18 @@ def donate(request):
             # description="payinguser@example.com",
         )
 
-        if request.POST.get('fb-access-token', False):
-            request_url = GRAPH_API_BASE_URL+"v2.0/me?access_token="+request.POST.get('fb-access-token', False)
-            response = urllib2.urlopen(request_url)
-            response_data = response.read()
-            data = json.loads(response_data)
+        request_url = GRAPH_API_BASE_URL+"v2.0/me?access_token="+request.POST.get('fb-access-token', False)
+        response = urllib2.urlopen(request_url)
+        response_data = response.read()
+        data = json.loads(response_data)
 
         if Contributor.objects.filter(facebook_id=data['id']).exists():
             contributor = Contributor.objects.get(facebook_id=data['id'])
             # This Contributor has contributed before!
+            contributor.last_contribution_date=timezone.now()
             contributor.score = 3
         else:
-            contributor = Contributor.objects.create(contribution_date=timezone.now())
+            contributor = Contributor.objects.create(last_contribution_date=timezone.now())
             contributor.facebook_id = data['id']
             contributor.name = data['first_name'] + " " + data['last_name']
             contributor.score = 1
@@ -108,30 +109,39 @@ def donate(request):
         if request.POST.get('map-coordinates-lng', False):
             contributor.lng = request.POST.get('map-coordinates-lng', False).encode('utf8')
 
+        donation = Donation_StandForPalestine(contributor=contributor, contribution_date=timezone.now())
+        donation.email = request.POST.get('stripeEmail', False).encode('utf8')
+        amount = str(charge['amount'])
+        donation.amount = amount[:len(amount)-2] + '.' + amount[len(amount)-2:]
+        if charge['card']['name']:
+            donation.name=charge['card']['name']
         if charge['card']['address_city']:
-            contributor.address_city = charge['card']['address_city']
+            # As long as any of the address attributes exist in the card hash, we know the user has selected that they want a receipt
+            donation.receipt_required = "YES"
+            donation.address_city = charge['card']['address_city']
 
         if charge['card']['address_country']:
-            contributor.address_country = charge['card']['address_country']
+            donation.address_country = charge['card']['address_country']
 
         if charge['card']['address_line1']:
             if charge['card']['address_line1_check'] == 'pass':
-                contributor.address_line1 = charge['card']['address_line1']
+                donation.address_line1 = charge['card']['address_line1']
             else:
-                contributor.address_line1 = 'error'
+                donation.address_line1 = 'error'
 
         if charge['card']['address_line2']:
-            contributor.address_line2 = charge['card']['address_line2']
+            donation.address_line2 = charge['card']['address_line2']
 
         if charge['card']['address_state']:
-            contributor.address_state = charge['card']['address_state']
+            donation.address_state = charge['card']['address_state']
 
         if charge['card']['address_zip']:
             if charge['card']['address_zip_check']:
-                contributor.address_zip = charge['card']['address_zip']
+                donation.address_zip = charge['card']['address_zip']
             else:
-                contributor.address_zip = 'error'
+                donation.address_zip = 'error'
 
+        donation.save()
         contributor.save()
 
     except stripe.CardError, e:

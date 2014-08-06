@@ -282,12 +282,13 @@
                 var contentString = "<table>" +
                     "<tr>" +
                     "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + contributor.fb_id + "/picture' /></td>" +
-                    "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Contributed "+ contributor.datestamp +"</td>" +
+                    "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Last Contributed "+ contributor.datestamp +"</td>" +
                     "</tr>" +
                     "</table>";
 
+                var marker = null;
                 if (contributor.score < 3) {
-                    var marker = new google.maps.Marker({
+                    marker = new google.maps.Marker({
                         position: new google.maps.LatLng(contributor.lat, contributor.lng),
                         map: gMap,
                         animation: google.maps.Animation.DROP,
@@ -295,7 +296,7 @@
                         info: contentString
                     });
                 } else {
-                    var marker = new google.maps.Marker({
+                    marker = new google.maps.Marker({
                         position: new google.maps.LatLng(contributor.lat, contributor.lng),
                         map: gMap,
                         animation: google.maps.Animation.DROP,
@@ -306,7 +307,7 @@
 
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow.setContent(this.info);
-                    infowindow.open(map, this);
+                    infowindow.open(gMap, this);
                 });
             }
           {% endif %}
@@ -417,8 +418,8 @@
 
           window.fbAsyncInit = function() {
           FB.init({
-            appId      : '1437375943194144',  // Production Key,
-{#            appId      : '1442162709382134',  // Test Key,#}
+{#            appId      : '1437375943194144',  // Production Key,#}
+            appId      : '1442162709382134',  // Test Key,
             cookie     : true,  // enable cookies to allow the server to access
                                 // the session
             xfbml      : true,  // parse social plugins on this page
@@ -448,7 +449,7 @@
               var js, fjs = d.getElementsByTagName(s)[0];
               if (d.getElementById(id)) return;
               js = d.createElement(s); js.id = id;
-              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1437375943194144&version=v2.0";
+              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1442162709382134&version=v2.0";
               fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
 
@@ -661,10 +662,12 @@
                                                     token: function(token) {
                                                       var $amount = $('<input type=hidden name=amount />').val($('input[name="amount"]:checked').val());
                                                       var $currency = $('<input type=hidden name=currency />').val('cad');
+                                                      var $email = $('<input type=hidden name=stripeEmail />').val(token.email);
                                                       var $input = $('<input type=hidden name=stripeToken />').val(token.id);
 
                                                       $('form').append($amount);
                                                       $('form').append($currency);
+                                                      $('form').append($email);
                                                       $('form').append($input).submit();
 
                                                       // Use the token to create the charge with a server-side script.
