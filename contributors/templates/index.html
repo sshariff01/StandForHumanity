@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
 <head>
     {% load staticfiles %}
     <meta charset="utf-8">
@@ -473,6 +473,13 @@
         function initializeConfig() {
             $('.dropdown').css('display', 'none !important');
         }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
     </script>
 
     <script>
@@ -650,7 +657,7 @@
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="1000">&nbsp;$10<br/>
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="2500" checked>&nbsp;$25<br/>
                                             <input style="margin-top: 10px;" type="radio" name="amount" value="5000">&nbsp;$50<br/>
-                                            <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" type="text">.00<br/>
+                                            <input style="margin-top: 10px;" type="radio" name="amount" id="otherAmount" value="">&nbsp;Other: $ <input id="otherInput" name="otherInput" size="5" onkeypress="return isNumberKey(event)">.00<br/>
 
 
                                             <button style="margin-top: 10px;" id="customButton" class="btn btn-primary">Donate to the Cause</button>
