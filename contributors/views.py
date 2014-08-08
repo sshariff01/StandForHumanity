@@ -45,6 +45,42 @@ def index(request):
 
     return render(request, 'index.html', data)
 
+def modern(request):
+    contributors = Contributor.objects.all().exclude(facebook_id=0)
+    lat = []
+    lng =[]
+    fb_id = []
+    name = []
+    datestamp = []
+    score = []
+
+    for contributor in contributors:
+        lat.append(contributor.lat.encode('utf8'))
+        lng.append(contributor.lng.encode('utf8'))
+        fb_id.append(contributor.facebook_id.encode('utf8'))
+        name.append(contributor.name.encode('utf8'))
+        datestamp.append(str(contributor.last_contribution_date.strftime('%d %B %Y %I:%M%p')) + " GMT")
+        score.append(contributor.score)
+
+
+    arrayOfContributors = []
+    for i in range(0, contributors.__len__()):
+        dict = {
+            "lat" : lat[i],
+            "lng" : lng[i],
+            "fb_id" : fb_id[i],
+            "name" : name[i],
+            "datestamp" : datestamp[i],
+            "score" : score[i]
+        }
+        arrayOfContributors.append(dict)
+
+    dump = json.dumps(arrayOfContributors)
+    data = {"contributors" : dump}
+
+
+    return render(request, 'modern.html', data)
+
 def postToMap(request):
     if request.POST.get('fbAccessToken', False):
         request_url = GRAPH_API_BASE_URL+"v2.0/me?access_token="+request.POST.get('fbAccessToken', False)

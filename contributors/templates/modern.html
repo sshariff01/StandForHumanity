@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stand for Humanity</title>
+    <link rel="icon" type="image/png" href="{% static 'img/fist_red.png' %}">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>window.jQuery || document.write("<script src={% static 'js/vendor/jquery-2.1.1.min.js' %}><\/script>")</script>
+
+{#    <link rel="stylesheet" href="{% static 'css/index.css' %}">#}
+
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/grayscale.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+
+
+    <!-- STRIPE API -->
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>#}
+
+{#    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIvAOA-EBPZkLm2lBr1DVPAX5LpwhWLnc&libraries=places&sensor=false&v=3.exp"></script>#}
+
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function initialize() {
+            // Create an array of styles.
+            var styles = [
+              {
+                "featureType": "administrative",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "road",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "road.arterial",
+                "elementType": "geometry",
+                "stylers": [
+                  { "gamma": 0.82 },
+                  { "visibility": "on" },
+                  { "hue": "#00a1ff" },
+                  { "lightness": -94 }
+                ]
+              },{
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "landscape",
+                "elementType": "geometry",
+                "stylers": [
+                  { "gamma": 0.82 },
+                  { "visibility": "on" },
+                  { "hue": "#00a1ff" },
+                  { "lightness": -84 }
+                ]
+              },{
+                "featureType": "road.highway",
+                "elementType": "geometry",
+                "stylers": [
+                  { "visibility": "on" },
+                  { "lightness": 15 },
+                  { "saturation": -10 },
+                  { "hue": "#00e5ff" }
+                ]
+              },{
+                "featureType": "administrative.country",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.province",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.neighborhood",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "administrative.land_parcel",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "water",
+                "elementType": "labels",
+                "stylers": [
+                  { "visibility": "off" }
+                ]
+              },{
+                "featureType": "water",
+                "stylers": [
+                  { "hue": "#0077ff" },
+                  { "saturation": -53 },
+                  { "lightness": -60 },
+                  { "gamma": 1.11 }
+                ]
+              },{
+              }
+            ];
+
+            // Create a new StyledMapType object, passing it the array of styles,
+            // as well as the name to be displayed on the map type control.
+            var styledMap = new google.maps.StyledMapType(styles,
+                {name: "Styled Map"});
+
+            // Create a map object, and include the MapTypeId to add
+            // to the map type control.
+            var mapOptions = {
+                zoom: 3,
+                mapTypeControl: false,
+                panControl: false,
+                center: new google.maps.LatLng(43.70011, -79.416300)
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+
+            var dialogInput = (document.getElementById('dialog-input'));
+            var dialogAutocomplete = new google.maps.places.Autocomplete(dialogInput);
+            dialogAutocomplete.bindTo('bounds', map);
+
+            var dialogInput2 = (document.getElementById('dialog-input2'));
+            var dialogAutocomplete2 = new google.maps.places.Autocomplete(dialogInput2);
+            dialogAutocomplete2.bindTo('bounds', map);
+
+            var input = /** @type {HTMLInputElement} */(
+            document.getElementById('pac-input'));
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+
+            // Try W3C Geolocation (Preferred)
+            if(navigator.geolocation) {
+                browserSupportFlag = true;
+                navigator.geolocation.getCurrentPosition(function(position) {
+                  initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                  map.setCenter(initialLocation);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  }, function() {
+                    handleNoGeolocation(browserSupportFlag);
+                  });
+            }
+            // Browser doesn't support Geolocation
+            else {
+                browserSupportFlag = false;
+                handleNoGeolocation(browserSupportFlag);
+            }
+
+            function handleNoGeolocation(errorFlag) {
+            $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+            $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+            }
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);
+            } else {
+              map.setCenter(place.geometry.location);
+              $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+              $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+              map.setZoom(4);  // Why 17? Because it looks good.
+            }
+
+            var address = '';
+            if (place.address_components) {
+              address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+              ].join(' ');
+            }
+            });
+
+            google.maps.event.addListener(dialogAutocomplete, 'place_changed', function() {
+                var place = dialogAutocomplete.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
+
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
+            });
+
+            google.maps.event.addListener(dialogAutocomplete2, 'place_changed', function() {
+                var place = dialogAutocomplete2.getPlace();
+                if (!place.geometry) {
+                  return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  $('input[name="map-coordinates-lat"]').val(map.getCenter().lat());
+                  $('input[name="map-coordinates-lng"]').val(map.getCenter().lng());
+                  map.setZoom(4);  // Why 17? Because it looks good.
+                }
+
+                var address = '';
+                if (place.address_components) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                  ].join(' ');
+                }
+            });
+
+
+            //Associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
+
+            google.maps.event.addListenerOnce(map, 'tilesloaded', addMarkers(map));
+
+        }
+;
+        function addMarkers(gMap) {
+          {% if contributors %}
+            var infowindow = new google.maps.InfoWindow();
+            var json = "{{ contributors }}";
+            var objJson = JSON.parse(JSON.stringify(json));
+            objJson = JSON.parse(objJson.replace(/&quot;/g, '"'));
+            var contributor;
+            for (var i = 0; i < objJson.length; i++) {
+                contributor = objJson[i];
+                var contentString = "<table>" +
+                    "<tr>" +
+                    "<td><img style='height: 50px; width: 50px; border-radius: 2px;' src='https://graph.facebook.com/v1.0/" + contributor.fb_id + "/picture' /></td>" +
+                    "<td style='padding-left: 10px;'><h5 style='margin: 0 0 3px 0;'>"+ contributor.name +"</h5><p style='font-size:10px'>Last Contributed "+ contributor.datestamp +"</td>" +
+                    "</tr>" +
+                    "</table>";
+
+                var marker = null;
+                if (contributor.score < 3) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                        map: gMap,
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/free_palestine_gray.png' %}",
+                        info: contentString
+                    });
+                } else {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(contributor.lat, contributor.lng),
+                        map: gMap,
+                        animation: google.maps.Animation.DROP,
+                        icon: "{% static 'img/free_palestine_green.png' %}",
+                        info: contentString
+                    });
+                }
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(this.info);
+                    infowindow.open(gMap, this);
+                });
+            }
+          {% endif %}
+    }
+    </script>
+
+    <script>
+          function loginUser() {
+              FB.login(
+                  function(response) {
+                      checkLoginState(); //This is a call to a different function...
+                  },
+                {scope:'user_likes, offline_access, publish_actions'}
+              );
+          }
+
+          function ensureLogin() {
+              FB.getLoginStatus(function(response) {
+                  console.log(response);
+                  if (response.status != 'connected') {
+                      FB.login(
+                              function(response) {
+                                  checkLoginState();
+                                  popupAfterLogin(response);
+                              },
+                              {scope:'user_likes, offline_access, publish_actions'}
+                      );
+                  } else {
+                      popupAfterLogin(response);
+                  }
+              });
+          }
+
+          function logoutUser() {
+              FB.logout(function(response) {
+                // user is now logged out
+                $('.dropdown').css('display', 'none !important');
+                location.reload();
+              });
+          }
+
+          function popupAfterLogin(response) {
+              jQuery.noConflict();
+              if (response.status=='connected') {
+                  $('#myModal').modal('show');
+              } else {
+                  $('#myModal').modal('hide');
+              }
+          }
+
+          function shareWithFacebook() {
+              FB.ui({
+                method: 'feed',
+                name: 'Stand for Humanity',
+                link: 'http://standforhumanity.herokuapp.com/bootstrap/',
+                picture: 'http://i.imgur.com/3RFW3uY.jpg',
+                caption: '#StandForPalestine - Make a Difference',
+                description: 'Support the cause and join hundreds of others to take a stand for humanity. ' +
+                        'We\'re creating a movement.'
+              }, function(response){
+                  if (response && !response.error_code) {
+                      postToMap(FB.getAuthResponse().userID, FB.getAuthResponse().accessToken);
+                  }
+              });
+          }
+
+          function postToMap(fbID, fbAccessToken) {
+            $.post("/postToMap/",
+                {
+                   facebookId:fbID,
+                   fbAccessToken:fbAccessToken,
+                   lat: $('input[name="map-coordinates-lat"]').val(),
+                   lng: $('input[name="map-coordinates-lng"]').val(),
+                   csrfmiddlewaretoken:$('input[name="csrfmiddlewaretoken"]').val()
+                },
+                function(data, success) {
+                    location.reload();
+                });
+          }
+
+          // This is called with the results from from FB.getLoginStatus().
+          function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+              // Logged into your app and Facebook.
+              testAPI();
+            } else if (response.status === 'not_authorized') {
+              // The person is logged into Facebook, but not your app.
+            } else {
+              // The person is not logged into Facebook, so we're not sure if
+              // they are logged into this app or not.
+            }
+          }
+
+          // This function is called when someone finishes with the Login
+          // Button.  See the onlogin handler attached to it in the sample
+          // code below.
+          function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+            });
+          }
+
+          window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1437375943194144',  // Production Key,
+{#            appId      : '1442162709382134',  // Test Key,#}
+            cookie     : true,  // enable cookies to allow the server to access
+                                // the session
+            xfbml      : true,  // parse social plugins on this page
+            version    : 'v2.0' // use version 2.0
+          });
+
+          // Now that we've initialized the JavaScript SDK, we call
+          // FB.getLoginStatus().  This function gets the state of the
+          // person visiting this page and can return one of three states to
+          // the callback you provide.  They can be:
+          //
+          // 1. Logged into your app ('connected')
+          // 2. Logged into Facebook, but n\ot your app ('not_authorized')
+          // 3. Not logged into Facebook and can't tell if they are logged into
+          //    your app or not.
+          //
+          // These three cases are handled in the callback function.
+
+          FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+          });
+
+          };
+
+          // Load the SDK asynchronously
+          (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1437375943194144&version=v2.0";
+              fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+          // Here we run a very simple test of the Graph API after login is
+          // successful.  See statusChangeCallback() for when this call is made.
+          function testAPI() {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function(response) {
+              console.log('Successful login for: ' + response.name);
+              $('input[name="fb-access-token"]').val(FB.getAuthResponse().accessToken);
+              $('#login-with-facebook').css('display', 'none');
+              $('.dropdown').css('display', 'block !important');
+              $('#facebook-image').append("<span class='caret' style='margin-right: 5px;'></span> " +
+                    "<img src='https://graph.facebook.com/v1.0/"+FB.getAuthResponse().userID+"/picture' width='30' style='border-radius: 8px;'></img>");
+
+            });
+          }
+    </script>
+
+    <script>
+        function initializeConfig() {
+            $('.dropdown').css('display', 'none !important');
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('a').click(function(){
+                $('html, body').animate({
+                    scrollTop: $( $.attr(this, 'href') ).offset().top - 50
+                }, 500);
+                return false;
+            });
+
+            $("input#otherInput").keyup(function(){
+                $('input#otherAmount').trigger('click');
+                $("input#otherAmount").val($(this).val() + "00");
+            });
+
+            var offset = 220;
+            var duration = 500;
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > offset) {
+                    $('.back-to-top').fadeIn(duration);
+                } else {
+                    $('.back-to-top').fadeOut(duration);
+                }
+            });
+        });
+    </script>
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" onload="initializeConfig();">
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">
+                    <i class="fa fa-play-circle"></i>  <span class="light">Stand for</span> Humanity
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden active">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="">
+                        <a class="page-scroll" href="#send">The Map</a>
+                    </li>
+                    <li class="">
+                        <a class="page-scroll" href="#contact">The Cause</a>
+                    </li>
+                    <li class="">
+                        <a class="page-scroll" href="#contact">Get Involved</a>
+                    </li>
+                    <li class="">
+                        <a class="page-scroll" href="#contact">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">What if you and your friends could make a difference?</h1>
+                        <p class="intro-text">Support the cause and join hundreds of others to take a stand for humanity.<br/>Join the movement. Make your mark.</p>
+                        <a href="#send" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="send" class="container content-section text-center">
+
+        <div class="featured_section">
+            <div class="featured_intro">
+                <div class="heading">For people who ask, "Where?"</div>
+                <div class="subheading">Everyone has a different journey. Follow those that inspire you.</div>
+                <div class="next"><div class="label">FEATURED MAPS</div>
+                <div class="icon"></div>
+            </div>
+        </div>
+        <div class="featured_set">
+            <div class="heading">
+                <a class="state_trigger heading_link" href="/a/hashtags/finditliveit">#finditliveit</a>
+            </div>
+        <div class="subheading">
+            A collection of inspiring places from all over the world beautifully captured by adventurers on Map.
+        </div>
+        <div class="cta">
+            <a href="/a/hashtags/finditliveit" class="button text_only bordered state_trigger">
+                <div class="label default">VIEW MAP</div>
+                <div class="icon"></div>
+            </a>
+        </div>
+        <div class="pics">
+            <div class="card_container for_pic with_place">
+                <div class="place_pic_card pic_id_gbv6cU_gmRM">
+                    <div class="place_pic_wrapper">
+                        <a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/gbv6cU_gmRM">
+                            <img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-gbv6cU_gmRM.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons">
+                            <div class="tidbit_community_button_wrapper pic_id_gbv6cU_gmRM">
+                                <div class="like_count hidden"></div>
+                            </div>
+                    </div>
+                </div>
+                <div class="place_tidbit_attribution">
+                    <a class="profile_pic_link state_trigger" target="_blank" href="/a/users/Z6mnw0C0w3g">
+                        <div class="profile_pic_smallest user_id_Z6mnw0C0w3g overlay">
+                            <div class="background_layer"></div>
+                            <div class="profile_pic_img">
+                                <img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-Z6mnw0C0w3g-oIkaNeu.smallest.jpg">
+                            </div>
+                        </div>
+                    </a>
+                    <div class="attribution_links">
+                        <a class="profile_name_link state_trigger" target="_blank" href="/a/users/Z6mnw0C0w3g">Anastasia_K</a>
+                    </div>
+                </div>
+            <div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=56.947548,24.109320000000025"></a><a class="place_name state_trigger" href="/a/places/cerkov-svyatogo-petra-ud15uwgze">Церковь Святого Петра</a><div class="place_area">Rīga, Latvia</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_5Wu9GDh00us"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/5Wu9GDh00us"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-5Wu9GDh00us.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_5Wu9GDh00us"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/gIGW3ZyUo-s"><div class="profile_pic_smallest user_id_gIGW3ZyUo-s overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-gIGW3ZyUo-s-oJ05l0z.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/gIGW3ZyUo-s">paulbarger</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=41.882634,-87.62329999999997"></a><a class="place_name state_trigger" href="/a/places/the-bean-dp3wq0d8j">The Bean</a><div class="place_area">Millennium Park, Chicago</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_D7SG3H0XE9M"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/D7SG3H0XE9M"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-D7SG3H0XE9M.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_D7SG3H0XE9M"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/SthW4rmFtLI"><div class="profile_pic_smallest user_id_SthW4rmFtLI overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-SthW4rmFtLI-oIhq7uB.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/SthW4rmFtLI">francescaramos</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=33.873415,-115.90099199999997"></a><a class="place_name state_trigger" href="/a/places/joshua-tree-national-park-9qj8dw7qz">Joshua Tree National Park</a><div class="place_area">Twentynine Palms, CA</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_IPg3B-AQUNg"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/IPg3B-AQUNg"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-IPg3B-AQUNg.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_IPg3B-AQUNg"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/CiJFg8nn-no"><div class="profile_pic_smallest user_id_CiJFg8nn-no overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-CiJFg8nn-no-oIibcJR.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/CiJFg8nn-no">jessxpang</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=-33.895173,151.274366"></a><a class="place_name state_trigger" href="/a/places/icebergs-dining-room-and-bar-r3gx4mddk">Icebergs Dining Room &amp; Bar</a><div class="place_area">Bondi Beach, NSW</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_BOTQaYPoh8Q"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/BOTQaYPoh8Q"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-BOTQaYPoh8Q.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_BOTQaYPoh8Q"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/d9KfZb66ptM"><div class="profile_pic_smallest user_id_d9KfZb66ptM overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-d9KfZb66ptM-oIjfb9w.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/d9KfZb66ptM">Dshapa</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=30.7142408,34.875695500000006"></a><a class="place_name state_trigger" href="/a/places/negev-desert-sv2y9x7eq">Negev Desert</a><div class="place_area">Negev Desert</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_cFQ2kDtkoFc"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/cFQ2kDtkoFc"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-cFQ2kDtkoFc.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_cFQ2kDtkoFc"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/Avzww074W_k"><div class="profile_pic_smallest user_id_Avzww074W_k overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-Avzww074W_k-oIaHCe5.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/Avzww074W_k">calvintiono</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=-6.346746,106.866217"></a><a class="place_name state_trigger" href="/a/places/115-coffee-qqggzu9ee">1/15 Coffee</a><div class="place_area">East Jakarta, Jakarta</div></div></div></div></div><div class="featured_set"><div class="heading"><a class="state_trigger heading_link" href="/a/hashtags/trailblazers">#trailblazers</a></div><div class="subheading">Hand selected adventurers across the world who inspire us to find it, live it.</div><div class="cta"><a href="/a/hashtags/trailblazers" class="button text_only bordered state_trigger"><div class="label default">VIEW MAP</div><div class="icon"></div></a></div><div class="pics"><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_RqvUiBBSX20"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/RqvUiBBSX20"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-RqvUiBBSX20.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_RqvUiBBSX20"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/4PuzYs9K7Zo"><div class="profile_pic_smallest user_id_4PuzYs9K7Zo overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-4PuzYs9K7Zo-oFMhTym.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/4PuzYs9K7Zo">ajfernando</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=51.098373,-114.04022399999997"></a><a class="place_name state_trigger" href="/a/places/italian-store-the-c3nfsynmw">Italian Store The</a><div class="place_area">Northeast Calgary, Calgary</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_4az5fuFc5Ag"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/4az5fuFc5Ag"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-4az5fuFc5Ag.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_4az5fuFc5Ag"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/912GfD-vzSU"><div class="profile_pic_smallest user_id_912GfD-vzSU overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-912GfD-vzSU-oAIdmnA.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/912GfD-vzSU">kmao</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=39.921428,116.432974"></a><a class="place_name state_trigger" href="/a/places/galaxy-soho-wx4g17rzh">Galaxy Soho</a><div class="place_area">Dongcheng, Beijing</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_fUZy2Ngrclc"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/fUZy2Ngrclc"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-fUZy2Ngrclc.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_fUZy2Ngrclc"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/K2Hsm9hldZY"><div class="profile_pic_smallest user_id_K2Hsm9hldZY overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-K2Hsm9hldZY-oFxpmKF.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/K2Hsm9hldZY">nasualua</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=41.3809044,2.193283199999996"></a><a class="place_name state_trigger" href="/a/places/woki-organic-market-barcelonet-sp3e3vjj5">Woki Organic Market Barceloneta</a><div class="place_area">Barcelona, Catalonia</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_j-KDV8R-g_I"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/j-KDV8R-g_I"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-j-KDV8R-g_I.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_j-KDV8R-g_I"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/lgr31P8tsVw"><div class="profile_pic_smallest user_id_lgr31P8tsVw overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-lgr31P8tsVw-oK2Cc3s.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/lgr31P8tsVw">reema</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=41.393721,2.1713379999999916"></a><a class="place_name state_trigger" href="/a/places/praktik-garden-sp3e3rmpg">Praktik Garden</a><div class="place_area">Barcelona, Barcelona</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_vZzKxLCgYlg"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/vZzKxLCgYlg"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-vZzKxLCgYlg.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_vZzKxLCgYlg"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/SMqwyxROrHs"><div class="profile_pic_smallest user_id_SMqwyxROrHs overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-SMqwyxROrHs-oHgeC53.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/SMqwyxROrHs">maevdkrogt</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=52.391702,4.905148000000054"></a><a class="place_name state_trigger" href="/a/places/blom-and-blom-store-u176p9egf">Blom &amp; Blom Store</a><div class="place_area">Amsterdam, Netherlands</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_9zwWD3U3HW4"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/9zwWD3U3HW4"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-9zwWD3U3HW4.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_9zwWD3U3HW4"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/PXOyIjgPkdw"><div class="profile_pic_smallest user_id_PXOyIjgPkdw overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-PXOyIjgPkdw-oGVlIUO.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/PXOyIjgPkdw">Zachary</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=34.039415,-118.875812"></a><a class="place_name state_trigger" href="/a/places/el-matador-state-beach-9q53wutmb">El Matador State Beach</a><div class="place_area">Malibu, CA</div></div></div></div></div><div class="featured_set"><div class="heading"><a class="state_trigger heading_link" href="/a/hashtags/mapaplate">#mapaplate</a></div><div class="subheading">A collection of delicious places from all over the world beautifully captured by hungry adventurers on Map.</div><div class="cta"><a href="/a/hashtags/mapaplate" class="button text_only bordered state_trigger"><div class="label default">VIEW MAP</div><div class="icon"></div></a></div><div class="pics"><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_tdq-AY4hvKc"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/tdq-AY4hvKc"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-tdq-AY4hvKc.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_tdq-AY4hvKc"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/cdPXBJcslNs"><div class="profile_pic_smallest user_id_cdPXBJcslNs overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-cdPXBJcslNs-oJCOWRn.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/cdPXBJcslNs">laurajung</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=37.551289,126.98841500000003"></a><a class="place_name state_trigger" href="/a/places/harvest-namsan-wydm9sn0h">Harvest Namsan</a><div class="place_area">Yongsandong 2(i)-ga, Seoul</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_JEdFS3pWfp4"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/JEdFS3pWfp4"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-JEdFS3pWfp4.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_JEdFS3pWfp4"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/eFExmQQK0fM"><div class="profile_pic_smallest user_id_eFExmQQK0fM overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-eFExmQQK0fM-oJr7Jqa.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/eFExmQQK0fM">sophiesvob</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=48.87125,2.3627950000000055"></a><a class="place_name state_trigger" href="/a/places/du-pain-et-des-idees-u09wjb8x9">Du Pain et des Idées</a><div class="place_area">Paris, France</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_P8xkgpXYUIM"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/P8xkgpXYUIM"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-P8xkgpXYUIM.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_P8xkgpXYUIM"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/xffctnGkHoU"><div class="profile_pic_smallest user_id_xffctnGkHoU overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-xffctnGkHoU-oJbZI0S.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/xffctnGkHoU">lucia</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=42.33696,-71.07589200000001"></a><a class="place_name state_trigger" href="/a/places/toro-restaurant-drt2yehne">Toro Restaurant</a><div class="place_area">Boston, MA</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_rkKvN1QzFPM"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/rkKvN1QzFPM"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-rkKvN1QzFPM.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_rkKvN1QzFPM"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/oU1a_HmSvuU"><div class="profile_pic_smallest user_id_oU1a_HmSvuU overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-oU1a_HmSvuU-oK7yMNA.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/oU1a_HmSvuU">Fotojojoe</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=34.045397,-118.236266"></a><a class="place_name state_trigger" href="/a/places/the-pie-hole-9q5ctmybz">The Pie Hole</a><div class="place_area">Downtown, Los Angeles</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_-lVq_DbbBoM"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/-lVq_DbbBoM"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic--lVq_DbbBoM.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_-lVq_DbbBoM"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/9FcRInaXfAo"><div class="profile_pic_smallest user_id_9FcRInaXfAo overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-9FcRInaXfAo-oK5KyVW.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/9FcRInaXfAo">bernicecruz</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=-12.113306,-77.04532599999999"></a><a class="place_name state_trigger" href="/a/places/la-mar-cebicheria-6mc5nfc6c">La Mar Cebichería</a><div class="place_area">Miraflores, Lima</div></div></div><div class="card_container for_pic with_place"><div class="place_pic_card pic_id_7a8odxZ6-TI"><div class="place_pic_wrapper"><a class="place_pic_trigger state_trigger" target="_blank" href="/a/pics/7a8odxZ6-TI"><img class="place_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/pic-7a8odxZ6-TI.detail.jpg" style="width: auto; height: 310px; top: 0px; margin-top: 0px; left: 155px; margin-left: -155px;"></a></div><div class="edit_tidbit_buttons"><div class="tidbit_community_button_wrapper pic_id_7a8odxZ6-TI"><div class="like_count hidden"></div></div></div></div><div class="place_tidbit_attribution"><a class="profile_pic_link state_trigger" target="_blank" href="/a/users/aJgHFDPUo1Q"><div class="profile_pic_smallest user_id_aJgHFDPUo1Q overlay"><div class="background_layer"></div><div class="profile_pic_img"><img class="profile_pic" src="//d2v8jy6rwyhlmd.cloudfront.net/user-aJgHFDPUo1Q-ozPGhVK.smallest.jpg"></div></div></a><div class="attribution_links"><a class="profile_name_link state_trigger" target="_blank" href="/a/users/aJgHFDPUo1Q">jade_melissa</a></div></div><div class="card_place_summary"><a class="map_marker icon" target="_blank" href="http://maps.google.com/maps?q=45.522439,-122.63717300000002"></a><a class="place_name state_trigger" href="/a/places/cheese-and-crack-snack-shop-c20fcr476">Cheese &amp; Crack Snack Shop</a><div class="place_area">Portland, OR</div></div></div></div></div></div>
+
+    </section>
+
+    <section id="email" class="content-section text-center">
+        <div class="email-section">
+            <div class="container">
+                <div class="col-lg-10 col-lg-offset-1" id="emailform">
+                    <h2>Send your message</h2>
+
+                    <p>You need to put in your postal code above first.</p>
+                    <a href="#send" class="btn btn-default btn-lg page-scroll">Scroll up</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/grayscale.js' %}"></script>
+</body>
