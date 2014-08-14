@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+.pane_intro.hide_until_css_loaded {
+  visibility: visible;
+}
+
+.pane_intro {
+  position: relative;
+  min-height: 100%;
+  background-color: #f5f5f5;
+}
+.pane_intro .feed_header {
+  background-color: #fff;
+}
+  .pane_intro .feed_header .heading {
+    padding: 60px 15px 0px;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 900;
+    margin: 0px auto;
+    max-width: 440px;
+  }
+  .pane_intro .feed_header .subheading {
+    color: #999;
+    padding: 3px 15px 30px;
+    line-height: 21px;
+    font-size: 14px;
+    margin: 0px auto;
+    max-width: 440px;
+  }
+.pane_intro .feed {
+
+}
+  .pane_intro .feed .places {
+    padding: 10px 5px 40px;
+    max-width: 460px;
+    margin: 0px auto;
+  }

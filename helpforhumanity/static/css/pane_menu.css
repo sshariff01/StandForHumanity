@@ -1,0 +1,310 @@
+@CHARSET "UTF-8";
+.pane_menu.hide_until_css_loaded {
+  visibility: visible;
+}
+.pane_menu_bar.hide_until_css_loaded {
+  visibility: visible;
+}
+
+.pane_menu {
+  position: relative;
+  height: 100%;
+}
+  .pane_menu .logo_trigger {
+    position: relative;
+    display: block;
+    height: 140px;
+  }
+    .pane_menu .logo_trigger .icon {
+      position: absolute;
+      left: 30px;
+      top: 60px;
+      width: 120px;
+      height: 40px;
+      background-position: 0px -280px;
+    }
+  .pane_menu .icon_trigger {
+    position: relative;
+    display: block;
+    height: 30px;
+    padding-left: 30px;
+  }
+    .pane_menu .icon_trigger .icon_trigger_link {
+      position: relative;
+      display: inline-block;
+    }
+      .pane_menu .icon_trigger_link .icon {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 30px;
+        height: 30px;
+        transition: opacity 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+        opacity: 0.5;
+      }
+        .pane_menu .icon_trigger_link:hover .icon {
+          opacity: 1;
+        }
+        .pane_menu .icon_trigger_link.getting_started .icon {
+          background-position: -366px -325px;
+        }
+        .pane_menu .icon_trigger_link.help .icon {
+          background-position: -285px -205px;
+        }
+        .pane_menu .icon_trigger_link.logout .icon {
+          background-position: -204px -245px;
+        }
+        .pane_menu .icon_trigger_link.settings .icon {
+          background-position: -446px -85px;
+        }
+      .pane_menu .icon_trigger_link .label {
+        color: #999;
+        font-weight: bold;
+        font-size: 16px;
+        height: 16px;
+        line-height: 16px;
+        padding: 7px 0px 7px 30px;
+        transition: color 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+      }
+        .pane_menu .icon_trigger_link:hover .label {
+          color: #fff;
+        }
+
+  .pane_menu .text_links {
+    padding: 20px 0px 0px 60px;
+  }
+    .pane_menu .text_links .menu_text_link {
+      display: block;
+      height: 14px;
+      line-height: 14px;
+      padding: 6px 0px;
+      color: #999;
+      transition: color 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+    }
+      .pane_menu .text_links .menu_text_link:hover {
+        color: #fff;
+      }
+
+  .pane_menu .icon_links {
+    padding: 30px 0px 0px 49px;
+  }
+    .pane_menu .icon_links .icon_link {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      width: 40px;
+      height: 40px;
+    }
+      .pane_menu .icon_links .icon_link .icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 40px;
+        height: 40px;
+        transition: opacity 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+        opacity: 0.5;
+      }
+        .pane_menu .icon_links .icon_link:hover .icon {
+          opacity: 1;
+        }
+        .pane_menu .icon_links .icon_link.instagram_link .icon {
+          background-position: -120px -280px;
+        }
+        .pane_menu .icon_links .icon_link.twitter_link .icon {
+          background-position: -0px -320px;
+        }
+        .pane_menu .icon_links .icon_link.facebook_link .icon {
+          background-position: -320px -118px;
+        }
+
+  #IntercomButtonPaneMenu {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    font-size: 16px;
+    height: 16px;
+    line-height: 16px;
+    padding: 34px 0px;
+    text-align: center;
+    font-weight: bold;
+    color: #999;
+    background-color: #222;
+    transition: color 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+  }
+    #IntercomButtonPaneMenu:hover {
+      color: #fff;
+    }
+    #IntercomButtonPaneMenu .icon {
+      display: inline-block;
+      vertical-align: top;
+      background-position: -331px -211px;
+      width: 19px;
+      height: 16px;
+      opacity: 0.8;
+      transition: opacity 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+    }
+      #IntercomButtonPaneMenu:hover .icon {
+        opacity: 1;
+      }
+
+.pane_menu_bar {
+  position: absolute;
+  top: 5px;
+  right: 50px;
+}
+.pane_menu_bar .profile_menu {
+  position: relative;
+  white-space: nowrap;
+}
+  .pane_menu_bar .profile_menu .loader_dots {
+    margin: 21px 10px;
+  }
+  .pane_menu_bar .profile_menu .profile_pic_link {
+
+  }
+    body.uploader_adding_new_place .pane_menu_bar .profile_menu .profile_pic_link {
+      display: none;
+    }
+    .pane_menu_bar .profile_menu .profile_pic_link .profile_pic_smallest {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+      .pane_menu_bar .profile_menu .profile_pic_link .profile_pic_smallest .icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 40px;
+        height: 40px;
+        background-position: -120px -160px;
+      }
+  .pane_menu_bar .profile_menu .show_notifications {
+
+  }
+    body.uploader_mode .pane_menu_bar .profile_menu .show_notifications {
+      display: none;
+    }
+    .pane_menu_bar .profile_menu .show_notifications .icon {
+      background-position: -240px -160px;
+    }
+    .pane_menu_bar .profile_menu .show_notifications .indicator {
+      display: none;
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background-color: #F1A85D;
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+    }
+      .pane_menu_bar .profile_menu .show_notifications .indicator.displayed {
+        display: block;
+      }
+.pane_menu_bar .menu_trigger {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+  .pane_menu_bar .menu_trigger .icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+    transition: opacity 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+  }
+    .pane_menu_bar .menu_trigger:hover .icon {
+      opacity: 1;
+    }
+    .pane_menu_bar .menu_trigger.sign_in .icon {
+      background-position: -200px -240px;
+    }
+    .pane_menu_bar .menu_trigger.sign_up .icon {
+      background-position: -280px -240px;
+    }
+    .pane_menu_bar .menu_trigger.uploads .icon {
+      background-position: -360px -280px;
+    }
+    body.uploader_mode .pane_menu_bar .menu_trigger.uploads {
+      display: none;
+    }
+
+/* This is in here because it's used by both pane_login.js and pane_signup.js */
+.auth_button {
+  position: relative;
+  background-color: #4E5563;
+  min-height: 50px;
+  width: 290px;
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+  .auth_button.narrow {
+    width: 200px;
+    min-height: 40px;
+  }
+  .auth_button.facebook {
+    background-color: #4867a7;
+  }
+  .auth_button .label {
+    width: 200px;
+    padding: 30px 5px 30px 25px;
+    font-weight: 900;
+    font-size: 14px;
+    color: #f2f2f2;
+    line-height: 18px;
+  }
+    .auth_button.narrow .label {
+      width: 150px;
+      padding: 12px;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 16px;
+    }
+  .auth_button .icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-position: -280px -120px;
+  }
+    .auth_button.narrow .icon {
+      right: 5px;
+    }
+    .auth_button.facebook .icon {
+      background-position: -240px -121px;
+    }
+      .auth_button.narrow.facebook .icon {
+        background-position: -320px -120px;
+        right: 0px;
+      }
+    .auth_button .loader {
+      position: absolute;
+      visibility: hidden;
+      top: 4px;
+      left: 4px;
+      background-color: #fff;
+      width: 6px;
+      height: 6px;
+      border-radius: 3px;
+    }
+      .auth_button.loading .loader {
+        visibility: visible;
+        -webkit-animation: fb_loader 500ms cubic-bezier(0, .24, 0, 0.65) 0s infinite alternate;
+        animation: fb_loader 500ms cubic-bezier(0, .24, 0, 0.65) 0s infinite alternate;
+      }
+        @-webkit-keyframes fb_loader {
+          0% {-webkit-transform: scale3d(0.5, 0.5, 1); opacity: 0;}
+          100% {-webkit-transform: scale3d(1, 1, 1); opacity: 1;}
+        }
+        @keyframes fb_loader {
+          0% {transform: scale3d(0.5, 0.5, 1); opacity: 0;}
+          100% {transform: scale3d(1, 1, 1); opacity: 1;}
+        }

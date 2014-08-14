@@ -1,0 +1,386 @@
+@CHARSET "UTF-8";
+.pane_map.hide_until_css_loaded {
+  visibility: visible;
+}
+
+.pane_map {
+  position: fixed;
+  top: 60px;
+  left: 100px;
+  bottom: 0px;
+  z-index: 10;
+  width: 500px;
+  background-color: #fff;
+  box-shadow: 0px 0px 0px 3px #fff;
+  overflow: hidden;
+  transition: left 150ms cubic-bezier(0, .50, .50, 1) 0s;
+}
+  body.bookmarklet .pane_map {
+    transition: right 150ms cubic-bezier(0, .50, .50, 1) 0s;
+  }
+  .pane_map.loading,
+  body.bookmarklet .pane_map.loading {
+    transition: none;
+  }
+  body.uploader_adding_new_place .pane_map {
+    top: 120px;
+  }
+  body.bookmarklet .pane_map {
+    top: 0px;
+    right: -330px;
+    left: auto;
+    width: 330px;
+    z-index: 9;
+    box-shadow: -1px 0px 1px rgba(0,0,0,0.2);
+  }
+  body.map_expanded .pane_map {
+    left: 0px;
+  }
+    body.bookmarklet.map_expanded .pane_map {
+      right: 0px;
+    }
+    body.map_expanded.place_picker_mode .pane_map {
+      width: 100%;
+    }
+      body.bookmarklet.map_expanded.place_picker_mode .pane_map {
+        width: 330px;
+        top: 200px;
+      }
+  #pane_map_canvas_container {
+    height: 100%;
+  }
+    #pane_map_canvas {
+      height: 100%;
+    }
+  .pane_map .map_control {
+    position: absolute;
+    display: none;
+    z-index: 4;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+  }
+    .pane_map .map_control:hover {
+      background-color: #eee;
+    }
+    body.map_expanded .pane_map .map_control {
+      display: block;
+    }
+      body.map_expanded.map_street_view_shown .pane_map .map_control,
+      body.map_expanded .pane_map .map_control.hidden,
+      body.map_expanded.bookmarklet_map_is_covered .pane_map .map_control {
+        display: none;
+      }
+    .pane_map .map_control.map_contract {
+      top: 18px;
+      left: 10px;
+      border-radius: 2px;
+    }
+      body.map_expanded.bookmarklet .pane_map .map_control.map_contract {
+        display: none;
+      }
+      body.place_picker_mode .pane_map .map_control.map_contract {
+        display: none;
+      }
+    .pane_map .map_control.map_type_toggle {
+      top: 53px;
+      right: 10px;
+      border-radius: 2px;
+    }
+    .pane_map .map_control.map_zoom_in {
+      top: 50%;
+      right: 10px;
+      margin-top: -30px;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+    }
+    .pane_map .map_control.map_zoom_out {
+      top: 50%;
+      right: 10px;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+    .pane_map .map_control.map_find_me {
+      top: 18px;
+      right: 10px;
+      border-radius: 2px;
+    }
+      .pane_map .map_control.map_find_me .loader_blink {
+        display: none;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+      }
+        .pane_map .map_control.map_find_me.locating_in_progress .loader_blink {
+          display: block;
+        }
+    .pane_map .map_control .icon {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 30px;
+      height: 30px;
+      transition: opacity 150ms cubic-bezier(.70, 0, .60, 1) 0s;
+    }
+      .pane_map .map_control.map_contract .icon {
+        background-position: -165px -205px;
+      }
+      .pane_map .map_control.map_type_toggle .icon {
+        background-position: -285px -85px;
+      }
+        .pane_map .map_control.map_type_toggle.map_type_road .icon {
+          background-position: -245px -85px;
+        }
+      .pane_map .map_control.map_zoom_in .icon {
+        background-position: -485px -5px;
+      }
+      .pane_map .map_control.map_zoom_out .icon {
+        background-position: -485px -19px;
+        top: 14px;
+        height: 2px;
+      }
+      .pane_map .map_control.map_find_me .icon {
+        background-position: -165px -85px;
+      }
+        .pane_map .map_control.map_find_me.locating_in_progress .icon {
+          display: none;
+        }
+  .pane_map .marker_summary {
+    display: none;
+    position: absolute;
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    border-right: solid 3px #f7f7f7;
+    background-color: #fff;
+    -webkit-animation: slide_down 150ms cubic-bezier(0, .50, .50, 1) 0s 1 normal;
+    animation: slide_down 150ms cubic-bezier(0, .50, .50, 1) 0s 1 normal;
+  }
+    .pane_map .marker_summary.naming_place {
+      background-color: #f7f7f7;
+    }
+    body.map_expanded .pane_map .marker_summary {
+      display: block;
+    }
+      body.map_expanded.place_picker_mode .pane_map .marker_summary {
+        border-right: none;
+      }
+        body.bookmarklet.map_expanded.place_picker_mode .pane_map .marker_summary {
+          border-left: solid 1px #eee;
+        }
+    body.map_expanded.map_street_view_shown .pane_map .marker_summary {
+      display: none;
+    }
+    .pane_map .marker_summary .icon.close_control {
+      position: absolute;
+      top: 13px;
+      left: 70px;
+      width: 30px;
+      height: 40px;
+      background-position: 0px 0px;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+      .pane_map .marker_summary.naming_place .icon.close_control {
+        display: none;
+      }
+      body.bookmarklet .pane_map .marker_summary .icon.close_control {
+        left: 11px;
+      }
+      .pane_map .marker_summary .icon.close_control:hover {
+        opacity: 1;
+      }
+    .pane_map .marker_summary .summary_container {
+      padding: 24px 110px 24px;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
+      .pane_map .marker_summary.naming_place .summary_container {
+        padding-bottom: 18px;
+      }
+      body.bookmarklet .pane_map .marker_summary .summary_container {
+        padding: 24px 40px 24px 50px;
+      }
+      .pane_map .marker_summary .summary_container .heading_for_naming_place {
+        display: none;
+        font-size: 20px;
+        font-weight: 900;
+        line-height: 20px;
+        padding: 36px 0px 12px 0px;
+      }
+        .pane_map .marker_summary.naming_place .summary_container .heading_for_naming_place {
+          display: block;
+        }
+      .pane_map .marker_summary .summary_container .place_name {
+        font-size: 14px;
+        line-height: 19px;
+        font-weight: 900;
+        color: #222;
+        display: inline-block;
+        padding-bottom: 2px;
+      }
+        body.uploader_adding_new_place .pane_map .marker_summary .summary_container .place_name,
+        body.bookmarker_adding_new_place .pane_map .marker_summary .summary_container .place_name{
+          display: none;
+        }
+        .pane_map .marker_summary .summary_container  a.place_name:hover {
+          color: #55bf9e;
+        }
+      .pane_map .marker_summary .summary_container .place_address {
+        font-size: 13px;
+        line-height: 19px;
+        color: #999;
+      }
+        .pane_map .marker_summary .summary_container .place_address .place_lat_lng {
+          position: relative;
+          display: inline-block;
+        }
+          .pane_map .marker_summary.naming_place .summary_container .place_address .place_lat_lng {
+            padding-left: 30px;
+          }
+          .pane_map .marker_summary .summary_container .place_address .place_lat_lng .icon {
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 19px;
+            height: 19px;
+            background-position: -93px -91px;
+          }
+            .pane_map .marker_summary.naming_place .summary_container .place_address .place_lat_lng .icon {
+              display: block;
+            }
+      .pane_map .marker_summary .summary_container .map_it_wrapper {
+        padding-top: 14px;
+      }
+        .pane_map .marker_summary.naming_place .summary_container .map_it_wrapper {
+          display: none;
+        }
+    .pane_map .marker_summary .new_place_form {
+
+    }
+      .pane_map .marker_summary .new_place_form .field_wrapper {
+        position: relative;
+        height: 70px;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: solid 1px #ddd;
+      }
+        .pane_map .marker_summary .new_place_form .field_wrapper .input_field {
+          position: absolute;
+          top: 15px;
+          left: 100px;
+          line-height: 14px;
+          font-size: 14px;
+          padding: 13px 5px 13px 40px;
+          width: 80%;
+          color: #222;
+          overflow: hidden;
+          background-color: transparent;
+        }
+        .pane_map .marker_summary .new_place_form .field_wrapper .icon {
+          position: absolute;
+          top: 15px;
+          left: 98px;
+          width: 30px;
+          height: 40px;
+          background-position: -400px 1px;
+        }
+        .pane_map .marker_summary .new_place_form .action_buttons {
+          margin: 20px 0px 40px 110px;
+        }
+          .pane_map .marker_summary .new_place_form .action_buttons .add_place {
+            margin-right: 20px;
+          }
+  .pane_map .map_show {
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 90px;
+    cursor: pointer;
+  }
+    body.bookmarklet .pane_map .map_show {
+      display: none;
+    }
+    body.map_expanded .pane_map .map_show {
+      display: none;
+    }
+
+  body.hide_map .pane_map {
+    left: -999px;
+    transition: initial;
+  }
+
+  body.map_home_page .pane_map {
+    position: absolute;
+    left: 0px;
+    bottom: auto;
+  }
+    body.map_home_page .pane_map .map_contract {
+      display: none;
+    }
+
+.pane_map .marker_label {
+  position: relative;
+  box-shadow: 0px 0px 1px #bbb;
+  border-bottom: solid 2px #ddd;
+  border-radius: 3px;
+  cursor: default;
+  -webkit-animation: fade_in_slide_up 150ms cubic-bezier(0, .50, .50, 1) 0s 1 normal;
+  animation: fade_in_slide_up 150ms cubic-bezier(0, .50, .50, 1) 0s 1 normal;
+}
+  .pane_map .marker_label .label_wrapper {
+    font-family: avenir_next, Arial, sans-serif;
+    padding: 15px 20px;
+    max-width: 250px;
+    min-width: 40px;
+    line-height: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 900;
+    color: #222;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+    .pane_map .marker_label.has_help_text .label_wrapper {
+      padding: 26px 20px 10px 20px;
+    }
+  .pane_map .marker_label .label_help_text {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    font-size: 12px;
+    line-height: 12px;
+    height: 16px;
+    color: #ccc;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0px 20px;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .pane_map .marker_label .triangle {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    margin-left: -6px;
+    width: 0px;
+    height: 0px;
+    border-color: transparent transparent #fff #fff;
+    border-style: solid;
+    border-width: 6px;
+    -webkit-transform: rotate(315deg);
+    transform: rotate(315deg);
+    box-shadow: 0px 2px 0px 0px #ddd;
+  }
