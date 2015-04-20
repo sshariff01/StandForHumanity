@@ -40,7 +40,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="671" column="67" selection-start="32787" selection-end="32787" vertical-scroll-proportion="0.49288255">
+            <state line="770" column="56" selection-start="39005" selection-end="39005" vertical-scroll-proportion="0.11921708">
               <folding>
                 <element signature="n#style#0;n#div#1;n#body#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#1;n#body#0;n#!!top" expanded="true" />
@@ -612,7 +612,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contributors/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="671" column="67" selection-start="32787" selection-end="32787" vertical-scroll-proportion="0.49288255">
+        <state line="770" column="56" selection-start="39005" selection-end="39005" vertical-scroll-proportion="0.11921708">
           <folding>
             <element signature="n#style#0;n#div#1;n#body#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#1;n#body#0;n#!!top" expanded="true" />
